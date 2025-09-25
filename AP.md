@@ -49,7 +49,6 @@ ACCEPTANCE:
 - <criterion 1>
 - <criterion 2>
 DELIVERABLES:
-- Unified patch/diffs (touch only SCOPE_TOUCH)
 - Proposed Conventional Commit message
 - Exactly one final section: `### Change Summary`
 NOTES:
@@ -78,8 +77,7 @@ ACCEPTANCE:
 - Blank popup A–Z; ghost score; judge batch; DW on center; bingo +50
 - ruff/mypy --strict/pytest all green
 DELIVERABLES:
-- Unified patch/diffs
-- Conventional Commit
+- Conventional Commit message
 - ### Change Summary
 NOTES:
 - No new deps; no git commands; Slovak comments
