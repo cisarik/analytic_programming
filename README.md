@@ -45,3 +45,13 @@ This prompt ensures the Orchestrator:
 - uses `AP.md` as the authoritative rule set,
 - thoroughly reviews `PRD.md`,
 - delivers the exact Boot Prompt (copied from `AP.md`) and the initial Worker INIT prompt.
+
+## Using AP_continue
+`AP_continue.md` is a streamlined variant of the Analytic Programming protocol for situations where you only have the repository code and need to resume work immediately. Instead of relying on a fresh PRD/AGENTS bundle, the Orchestrator reads the attached codebase and produces a single behavior-preserving **RESET prompt** that aligns style, removes dead code, and sets up quality gates before normal task slicing resumes.
+
+### Quick example
+1. The Owner zips the repository, attaches the ZIP together with `AP_continue.md`, and opens a new chat.
+2. The Orchestrator studies the code, then replies with the RESET prompt planned around the current structure (for example, cleaning legacy modules and enabling lint/type checks).
+3. The Owner forwards that RESET prompt to the Worker, who returns diffs that satisfy the acceptance criteria.
+4. Subsequent work continues with regular single-slice prompts exactly as described in `AP_continue.md`.
+
