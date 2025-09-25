@@ -49,7 +49,7 @@ ACCEPTANCE:
 - <criterion 1>
 - <criterion 2>
 DELIVERABLES:
-- Unified patch/diffs (touch only SCOPE_TOUCH)
+- Concise diff summary (only key hunks within SCOPE_TOUCH; no full patch dump)
 - Proposed Conventional Commit message
 - Exactly one final section: `### Change Summary`
 NOTES:
@@ -78,7 +78,7 @@ ACCEPTANCE:
 - Blank popup A–Z; ghost score; judge batch; DW on center; bingo +50
 - ruff/mypy --strict/pytest all green
 DELIVERABLES:
-- Unified patch/diffs
+- Concise diff summary (key hunks only)
 - Conventional Commit
 - ### Change Summary
 NOTES:
@@ -90,7 +90,7 @@ NOTES:
 ## 3) Worker → Orchestrator response (strict format)
 Worker must respond in the following order. When something doesn’t apply, the section can be omitted (not replaced with placeholders).
 
-1) **Unified Diffs** (touching only `SCOPE_TOUCH`), with clear file paths.
+1) **Concise Diff Summary** (touching only `SCOPE_TOUCH`): highlight key hunks and intent; avoid pasting full patches unless explicitly requested.
 2) **Test & lint status** (expected results locally):  
    - `ruff`: OK/violations (short)  
    - `mypy --strict`: OK/issues (short)  
@@ -106,7 +106,7 @@ Worker must respond in the following order. When something doesn’t apply, the 
 ```
 
 **If acceptance cannot be fully met**
-- Produce partial diffs **or** no diffs, plus a concise **Failure Report**:
+- Produce partial diff summaries **or** no diffs, plus a concise **Failure Report**:
   - What blocked the task (facts only)
   - What was tried (brief)
   - Proposed next actionable steps or an adjusted prompt
@@ -165,7 +165,7 @@ If acceptance cannot be met, stop, provide a Failure Report (facts only), and pr
 
 ## 8) Suggested lifecycle
 1) Owner states an objective → Orchestrator drafts a task (this spec) → Owner approves or tweaks.
-2) Worker delivers diffs → Orchestrator reviews against **ACCEPTANCE** → Owner merges or requests follow‑ups.
+2) Worker delivers concise diff summaries → Orchestrator reviews against **ACCEPTANCE** → Owner merges or requests follow‑ups.
 3) Iterate with small steps until MVP criteria in **PRD.md** are met.
 
 ---
