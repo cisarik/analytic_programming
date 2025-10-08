@@ -24,7 +24,7 @@
         }
       },
       "max_concurrent_tasks": 3,
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "gpt4-main",
@@ -44,7 +44,7 @@
         }
       },
       "max_concurrent_tasks": 2,
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "codex-fast",
@@ -65,7 +65,7 @@
         }
       },
       "max_concurrent_tasks": 5,
-      "enabled": true
+      "enabled": false
     }
   ],
   "global_forbid": [

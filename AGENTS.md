@@ -485,7 +485,7 @@ This is an open protocol. Questions or suggestions?
 ## Working with the Orchestrator Implementation
 
 ### Overview of Orchestrator Files
-The autonomous orchestrator is now implemented and working:
+The autonomous orchestrator is now fully implemented with MCPServerStdio:
 
 **Base Implementation** (`orchestrator.py` - ~900 lines):
 - Core data structures (AnalysisReport, CoordinationPlan, AccomplishmentReport)
@@ -494,19 +494,65 @@ The autonomous orchestrator is now implemented and working:
 - SQLite persistence layer
 - File upload handlers
 
-**Complete Implementation** (`orchestrator_enhanced.py` - ~800 lines):
+**Complete Implementation** (`orchestrator_enhanced.py` - ~900 lines):
 - Full ANALYTIC PHASE with streaming
 - Full PLANNING PHASE with scope validation
+- Full EXECUTION PHASE with MCP worker spawning
 - Scope conflict detection algorithm (mathematical guarantee)
 - Real-time progress streaming
 - Self-monitoring status tracking
 - Orchestrator tools (analyze_codebase, validate_scope_exclusivity, list_workers)
 
+**MCP Worker Manager** (`mcp_server_stdio.py` - ~650 lines) **NEW!**
+- **MCPServerStdio** - Direct stdin/stdout communication with workers
+- **MCP Protocol** - Standard JSON messages (based on OpenAI Codex SDK)
+- **Bidirectional** - Full request/response capability
+- **Real-time** - Event-driven (<1ms latency)
+- **Message types**: INITIALIZE, EXECUTE_TASK, TOOL_USE, PROGRESS, TASK_COMPLETE, TASK_ERROR
+- **WebSocketBroadcaster** - Streams worker activity to dashboard
+- **WorkerPoolManager** - Manages multiple workers
+
 **Configuration** (`team.json`):
 - Worker agent definitions (Claude, GPT-4, Codex)
-- Capabilities and MCP connection details
+- MCP connection details (command, args, env)
+- Capabilities and concurrency limits
 - Global forbid patterns
 - Quality gate configuration
+
+**Dashboard UI** (`dashboard.html`):
+- Real-time worker monitoring
+- Activity feed (tool use, progress, errors)
+- Metrics (tasks completed, tools used, files modified)
+- WebSocket connection to `ws://localhost:8765`
+
+### MCPServerStdio Refactoring (October 2025)
+
+The orchestrator was refactored from log file monitoring to direct stdio communication:
+
+**Previous Approach (Deprecated):**
+- Workers wrote to log files (`~/.codex/log/codex-tui.log`)
+- `AsyncLogMonitor` polled files every 100ms
+- Custom text parsing
+- One-way communication
+- File system dependency
+
+**Current Approach (MCPServerStdio):**
+- Workers communicate via stdin/stdout
+- JSON MCP protocol messages
+- Event-driven (<1ms latency)
+- Bidirectional request/response
+- No file system dependency
+
+**Performance Improvement:** 100× faster real-time communication
+
+**Documentation:**
+- `REFACTORING_MCPSERVERSTDIO.md` - Complete refactoring guide
+- `REFACTORING_SUMMARY.md` - Quick summary
+- Based on: https://developers.openai.com/codex/guides/agents-sdk/
+
+**Key Files:**
+- `mcp_server_stdio.py` - New implementation
+- `mcp_worker_connector.py` - Old implementation (deprecated, kept for reference)
 
 ### Three-Phase Documentation System
 

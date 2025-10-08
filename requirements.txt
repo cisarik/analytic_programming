@@ -1,0 +1,28 @@
+# Analytic Programming Orchestrator - Dependencies
+# Version: 1.2.0 (Phase 3 - MCP Integration)
+
+# NOTE: asyncio is built into Python 3.7+ standard library
+
+# File I/O async support (for log monitoring)
+aiofiles>=23.2.1
+
+# WebSocket server/client (for dashboard streaming)
+websockets>=12.0
+
+# Optional: File system monitoring (backup for log monitoring)
+# watchdog>=3.0.0
+
+# Optional: Async SQLite (currently using sync SQLite from stdlib)
+# aiosqlite>=0.19.0
+
+# Optional: Production HTTP server
+# uvicorn>=0.24.0
+# fastapi>=0.104.0
+
+# Optional: Development dependencies
+# pytest>=7.4.0
+# pytest-asyncio>=0.21.0
+# black>=23.0.0
+# ruff>=0.1.0
+# mypy>=1.6.0
+

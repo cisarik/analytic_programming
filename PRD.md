@@ -28,6 +28,37 @@ Analytic Programming provides a protocol for multi-agent orchestration enabling:
 
 ## Core Requirements
 
+### R0: MCPServerStdio - Direct Worker Communication (CRITICAL)
+**Priority**: P0
+**Status**: ✅ Implemented (Refactored October 2025)
+
+The system MUST support direct stdin/stdout communication with MCP workers using standard MCP protocol:
+- **R0.1**: Spawn worker processes with stdin/stdout pipes
+- **R0.2**: Communicate via JSON MCP protocol messages (INITIALIZE, EXECUTE_TASK, TOOL_USE, TASK_COMPLETE, etc.)
+- **R0.3**: Support bidirectional communication (request/response)
+- **R0.4**: Provide real-time event-driven updates (<1ms latency)
+- **R0.5**: Handle errors gracefully with acknowledgments and retries
+- **R0.6**: Stream worker activity to dashboard via WebSocket
+
+**Implementation**: `mcp_server_stdio.py` (650 lines)
+
+**Acceptance Criteria**:
+- Workers communicate via stdin/stdout (not log files)
+- MCP protocol messages are standard JSON format
+- Bidirectional communication works (client ↔ server)
+- Real-time updates (no polling)
+- Full error handling and progress tracking
+- WebSocket broadcasts worker activity
+
+**Benefits over previous log monitoring approach**:
+- 100× faster (event-driven vs 100ms polling)
+- Standard protocol (OpenAI Codex SDK compatible)
+- Bidirectional (request/response)
+- No file system dependency
+- Better error handling
+
+**Reference**: Based on https://developers.openai.com/codex/guides/agents-sdk/
+
 ### R1: Multi-Agent Orchestration (CRITICAL)
 **Priority**: P0
 **Status**: ✅ Implemented

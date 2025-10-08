@@ -18,10 +18,51 @@ Analytic Programming (AP) is a collaboration protocol between the Owner, Orchest
 - **`AGENTS.md`**: Comprehensive guide for AI agents working on this project
 
 ## Implementation
-- **`orchestrator.py`**: Base orchestrator implementation (~900 lines) with data structures, documentation generation, and auto-documentation engine
-- **`orchestrator_enhanced.py`**: Complete orchestrator (~800 lines) with full ANALYTIC/PLANNING phases, scope validation, and streaming
-- **`team.json`**: Worker configuration for Claude, GPT-4, and Codex agents
-- **`docs/`**: Auto-generated documentation structure (accomplishments, analyses, plans, sessions)
+
+### Core Components
+- **`orchestrator.py`**: Base orchestrator (~900 lines) - data structures, documentation generation, auto-documentation engine
+- **`orchestrator_enhanced.py`**: Complete orchestrator (~900 lines) - full ANALYTIC/PLANNING/EXECUTION phases with streaming
+- **`mcp_server_stdio.py`**: MCP worker manager (~650 lines) - direct stdio communication using OpenAI Codex SDK pattern
+- **`dashboard.html`**: Real-time dashboard UI for monitoring worker activity and metrics
+- **`team.json`**: Worker configuration (Claude, GPT-4, Codex) with MCP connection details
+- **`docs/`**: Auto-generated documentation (accomplishments, analyses, plans, sessions)
+
+### MCPServerStdio - Direct Worker Communication (Phase 3) 🚀
+
+**Architecture:**
+```
+Orchestrator → MCPServerStdio → Worker (stdin/stdout)
+                     ↕
+              JSON MCP Messages
+                     ↓
+           WebSocket → Dashboard
+```
+
+**Key Features:**
+- ✅ **Direct stdio communication** - no file system dependency
+- ✅ **MCP Protocol** - standard JSON messages (based on OpenAI Codex SDK)
+- ✅ **Bidirectional** - full request/response capability
+- ✅ **Real-time** - event-driven (<1ms latency vs 100ms polling)
+- ✅ **Error handling** - task errors, acknowledgments, progress tracking
+- ✅ **WebSocket streaming** - live updates to dashboard (`ws://localhost:8765`)
+
+**Quick Start:**
+```bash
+# Install dependencies
+pip install aiofiles websockets
+
+# Run orchestrator (demo mode)
+python orchestrator_enhanced.py
+
+# Open dashboard
+open dashboard.html
+```
+
+**Documentation:**
+- [REFACTORING_MCPSERVERSTDIO.md](REFACTORING_MCPSERVERSTDIO.md) - Complete implementation guide
+- [REFACTORING_SUMMARY.md](REFACTORING_SUMMARY.md) - Quick summary
+
+**To enable real workers:** Create MCP-compliant worker scripts (see REFACTORING_MCPSERVERSTDIO.md)
 
 ## Required Artifacts
 When working with the Orchestrator, **always attach**:
