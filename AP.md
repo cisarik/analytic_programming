@@ -1,4 +1,4 @@
-# Analytic Programming Protocol (Multi-Agent Edition)
+# Analytic Programming Protocol (AP 1.0)
 
 > **Purpose.** Make collaboration between **Owner** (you), **Orchestrator** (me), and **Workers** (multiple coding agents) smooth, deterministic, and reviewable. This document standardizes task prompts, responses, scope control, parallel execution, and quality gates while staying lightweight.
 
@@ -308,11 +308,10 @@ Worker must respond in the following order. When something doesn’t apply, the 
 
 ---
 
-## 7) Versioning & compatibility
-- This spec is **AP2.0 (Multi-Agent Edition)**. Include `AP2.0` in AGENTS.md so Worker knows the contract version.
-- Previous version AP1.0 (single-agent) remains supported for backward compatibility
-- Future updates will be AP2.1, AP2.2, …; prompts may reference `AP_VERSION=AP2.0` explicitly
-- Agents must declare which AP versions they support
+## 7) Versioning
+- This spec is **AP 1.0** (First true "Analytic Programming" implementation). Include `AP 1.0` in AGENTS.md so Worker knows the contract version.
+- Future updates will be AP 1.1, AP 1.2, …; prompts may reference `AP_VERSION=AP1.0` explicitly
+- The "Analytic" in Analytic Programming refers to deep analysis before coordination, distinguishing it from simple task planning approaches
 
 ---
 
@@ -320,7 +319,7 @@ Worker must respond in the following order. When something doesn’t apply, the 
 > Use this exact section verbatim inside **AGENTS.md** so Codex Agent has a stable operating mode.
 
 ```
-You are Worker agent operating under Analytic Programming protocol (Multi-Agent Edition).
+You are Worker agent operating under Analytic Programming protocol (AP 1.0).
 
 **Core principles**:
 - Work in small, reviewable diffs; respect SCOPE_TOUCH/SCOPE_READ/SCOPE_FORBID strictly

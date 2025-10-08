@@ -1,21 +1,27 @@
-# Analytic Programming (AP 2.0 - Multi-Agent Edition)
+# Analytic Programming (AP 1.0)
 
 Analytic Programming (AP) is a collaboration protocol between the Owner, Orchestrator, and Workers (multiple AI agents) that enforces small deterministic increments, parallel execution, and transparent quality control. It clearly separates prompt design (Orchestrator) from implementation (Workers) while enabling conflict-free parallel task execution across multiple coding agents.
 
-## What AP 2.0 Provides
+## What AP Provides
 - **Multi-agent orchestration**: Parallel execution across Codex, Claude, GPT-4, and other agents
 - **Wave-based execution**: Tasks grouped into waves with exclusive scope allocation
 - **Zero conflicts**: Mathematical guarantee via scope conflict prevention algorithm
 - **3-5× faster**: Parallel execution reduces time from 45+ minutes to ~15 minutes for large refactors
 - **Agent specialization**: Right agent for the right task (Claude for architecture, Codex for tests)
 - **Deterministic testing**: Framework for validating orchestration logic
-- **Backward compatible**: AP 1.0 single-agent mode still supported for simple tasks
+- **Autonomous orchestrator**: Self-monitoring orchestrator with real-time streaming and auto-documentation (Phases 1 & 2 complete)
 
 ## Core Documents
-- **`AP.md`**: The definitive Analytic Programming Protocol specification (version AP2.0) including multi-agent orchestration, wave execution, scope management, and Boot Prompt
+- **`AP.md`**: The definitive Analytic Programming Protocol specification (version 1.0) including multi-agent orchestration, wave execution, scope management, and Boot Prompt
 - **`AP_continue.md`**: Streamlined protocol for quick-start with codebase (multi-agent RESET plan)
 - **`PRD.md`**: Product requirements; the single source of truth for functional scope
 - **`AGENTS.md`**: Comprehensive guide for AI agents working on this project
+
+## Implementation
+- **`orchestrator.py`**: Base orchestrator implementation (~900 lines) with data structures, documentation generation, and auto-documentation engine
+- **`orchestrator_enhanced.py`**: Complete orchestrator (~800 lines) with full ANALYTIC/PLANNING phases, scope validation, and streaming
+- **`team.json`**: Worker configuration for Claude, GPT-4, and Codex agents
+- **`docs/`**: Auto-generated documentation structure (accomplishments, analyses, plans, sessions)
 
 ## Required Artifacts
 When working with the Orchestrator, **always attach**:
@@ -42,7 +48,7 @@ When working with the Orchestrator, **always attach**:
 Use this prompt when you need the Orchestrator to decompose a request into multi-agent tasks:
 
 ```
-You are the Orchestrator for project <ProjectName> operating under Analytic Programming protocol AP2.0 (Multi-Agent Edition).
+You are the Orchestrator for project <ProjectName> operating under Analytic Programming protocol AP 1.0.
 
 ATTACHED DOCUMENTS:
 - AP.md: Multi-agent protocol specification with wave execution and scope management
@@ -93,7 +99,7 @@ This ensures:
 
 **Benefits**: 3× faster baseline refactoring, zero conflicts, behavior preservation guaranteed
 
-## Key Features of AP 2.0
+## Key Features
 
 ### Wave-Based Execution
 Tasks grouped into waves where:
@@ -133,28 +139,48 @@ Framework for validating orchestration logic (AP.md Section 9):
 - **`AP.md`**: Full AP 2.0 protocol (660 lines)
 - **`AP_continue.md`**: Quick-start variant (345 lines)
 
-## Version History
-- **AP 1.0**: Single-agent sequential execution
-- **AP 2.0**: Multi-agent parallel execution with wave-based orchestration
+## Version
+- **AP 1.0**: First true "Analytic Programming" implementation
+  - Multi-agent parallel execution with wave-based orchestration
   - 3-5× faster for independent tasks
   - Zero scope conflicts (guaranteed)
   - Agent specialization
-  - Backward compatible with AP 1.0
+  - Autonomous orchestrator with self-monitoring
 
 ## Getting Started
 
+### For Understanding the Protocol
 1. **Read** `MULTIAGENT_UPGRADE_COMPLETE.md` for comprehensive overview
 2. **Study** `AP.md` sections 0-2 for multi-agent orchestration basics
 3. **Review** examples in `AP.md` section 3 and `AP_continue.md` section 7
 4. **Understand** scope conflict prevention algorithm (AP.md section 2.2)
 5. **Practice** with single-file changes (AP 1.0 mode) before multi-agent tasks
 
+### For Using the Orchestrator (NEW!)
+1. **Read** `IMPLEMENTATION_SUMMARY.md` for Phase 1 foundation overview
+2. **Read** `PHASE2_COMPLETE.md` for complete implementation details
+3. **Review** `SESSION_SUMMARY.md` for full development context
+4. **Configure** worker agents in `team.json`
+5. **Run** `python orchestrator_enhanced.py` to test the orchestrator
+
+### Quick Test
+```bash
+# Test the orchestrator with streaming output
+python orchestrator_enhanced.py
+
+# Output: Complete ANALYTIC and PLANNING phases with:
+# - Analysis Report saved to docs/analyses/
+# - Coordination Plan saved to docs/plans/
+# - Accomplishment Report saved to docs/accomplishments/
+# - Auto-generated commit message
+```
+
 ## Contributing
 
 When proposing changes to the AP protocol:
-1. Maintain backward compatibility with AP 1.0
-2. Update deterministic test cases (AP.md section 9)
-3. Update all documentation files consistently
-4. Validate scope conflict prevention guarantees
-5. Measure performance impact (single-agent vs multi-agent)
+1. Update deterministic test cases (AP.md section 9)
+2. Update all documentation files consistently
+3. Validate scope conflict prevention guarantees
+4. Measure performance impact
+5. Maintain the "Analytic" philosophy: deep analysis before coordination
 

@@ -1,4 +1,4 @@
-# Analytic Programming — AP_continue.md (Multi-Agent Edition)
+# Analytic Programming — AP_continue.md (AP 1.0)
 
 > **Purpose.** Allow the **Owner** to attach a ZIP (project code) + this single file and immediately continue Analytic Programming in a fresh session — *without* PRD/AGENTS/brainstorming. The codebase itself is the source of truth. This document defines:
 > 1) How the **Orchestrator** begins (deep analysis → **RESET plan** with multiple parallel tasks),  
@@ -340,6 +340,6 @@ NOTES:
 ---
 
 ## 8) Final note
-This **AP_continue.md (Multi-Agent Edition)** is drop‑in: attach it with your ZIP and we can continue *immediately*. The Orchestrator's first reply will be only the **RESET plan** (set of parallel tasks with exclusive scopes) — no code, no extra artifacts.
+This **AP_continue.md (AP 1.0)** is drop‑in: attach it with your ZIP and we can continue *immediately*. The Orchestrator's first reply will be only the **RESET plan** (set of parallel tasks with exclusive scopes) — no code, no extra artifacts.
 
-**Version**: AP2.0 compatible; supports both single-agent (simple tasks) and multi-agent (parallel execution) modes.
+**Version**: AP 1.0 - The first true "Analytic Programming" implementation emphasizing deep analysis before coordination.
