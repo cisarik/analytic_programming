@@ -154,6 +154,7 @@ ACCEPTANCE:
 - <criterion 1>
 - <criterion 2>
 DELIVERABLES:
+- Concise diff summary (only key hunks within SCOPE_TOUCH; no full patch dump)
 - Proposed Conventional Commit message
 - Exactly one final section: `### Change Summary`
 NOTES:
@@ -190,7 +191,8 @@ ACCEPTANCE:
 - Click-to-place works; visual feedback on hover
 - ruff/mypy --strict pass
 DELIVERABLES:
-- Conventional Commit message
+- Concise diff summary (key hunks only)
+- Conventional Commit
 - ### Change Summary
 NOTES:
 - Slovak comments; English report
@@ -258,7 +260,7 @@ DELIVERABLES:
 ## 4) Worker → Orchestrator response (strict format)
 Worker must respond in the following order. When something doesn’t apply, the section can be omitted (not replaced with placeholders).
 
-1) **Unified Diffs** (touching only `SCOPE_TOUCH`), with clear file paths.
+1) **Concise Diff Summary** (touching only `SCOPE_TOUCH`): highlight key hunks and intent; avoid pasting full patches unless explicitly requested.
 2) **Test & lint status** (expected results locally):  
    - `ruff`: OK/violations (short)  
    - `mypy --strict`: OK/issues (short)  
@@ -274,7 +276,7 @@ Worker must respond in the following order. When something doesn’t apply, the 
 ```
 
 **If acceptance cannot be fully met**
-- Produce partial diffs **or** no diffs, plus a concise **Failure Report**:
+- Produce partial diff summaries **or** no diffs, plus a concise **Failure Report**:
   - What blocked the task (facts only)
   - What was tried (brief)
   - Proposed next actionable steps or an adjusted prompt
@@ -343,6 +345,7 @@ If acceptance cannot be met, stop, provide a Failure Report (facts only), and pr
 
 ---
 
+<<<<<<< HEAD
 ## 9) Deterministic Testing System for AP
 
 ### 9.1) Purpose
