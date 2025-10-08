@@ -31,10 +31,8 @@ analytic_programming/
 ├── README.md                           # Project overview
 ├── PRD.md                              # Product requirements
 ├── AGENTS.md                           # This file (for you!)
-├── MULTIAGENT_UPGRADE_COMPLETE.md      # Comprehensive upgrade guide
-├── BEFORE_AFTER_COMPARISON.md          # Visual AP 1.0 vs AP 2.0
-├── AP_MULTIAGENT_SUMMARY.md            # Detailed AP.md changes
-└── AP_CONTINUE_MULTIAGENT_SUMMARY.md   # Detailed AP_continue.md changes
+├── ARCHITECTURE.md                     # System architecture
+└── CURRENT_IMPLEMENTATION.md           # Current implementation status
 ```
 
 ### File Purposes
@@ -47,12 +45,8 @@ analytic_programming/
 **Documentation Files**:
 - **README.md**: Start here for high-level overview and getting started guide.
 - **AGENTS.md**: You're reading it! Your guide to working on this project.
-- **MULTIAGENT_UPGRADE_COMPLETE.md**: Best comprehensive summary of AP 2.0 changes.
-- **BEFORE_AFTER_COMPARISON.md**: Visual diagrams showing improvements.
-
-**Summary Files** (for deep dives):
-- **AP_MULTIAGENT_SUMMARY.md**: Section-by-section AP.md changes.
-- **AP_CONTINUE_MULTIAGENT_SUMMARY.md**: Section-by-section AP_continue.md changes.
+- **ARCHITECTURE.md**: System architecture and design diagrams.
+- **CURRENT_IMPLEMENTATION.md**: Complete implementation status.
 
 ## Key Concepts (Must Understand)
 
@@ -202,7 +196,7 @@ When completing a task, respond with:
 3. Implement in `AP.md` Section 2-6 if core
 4. Add examples to `AP.md` Section 3 or `AP_continue.md` Section 7
 5. Update test cases in `AP.md` Section 9
-6. Update `README.md`, `AGENTS.md`, `MULTIAGENT_UPGRADE_COMPLETE.md`
+6. Update `README.md`, `AGENTS.md`, `CURRENT_IMPLEMENTATION.md`
 
 ### Testing Your Changes
 
@@ -318,8 +312,8 @@ def validate_scope_touch_not_empty(task):
 **Files to Update**:
 1. `AP.md` Section 10: Add new subsection (10.13, 10.14, etc.)
 2. `PRD.md`: Add as Future Enhancement (F13, F14, etc.)
-3. `MULTIAGENT_UPGRADE_COMPLETE.md`: Add to Phase 4 or Phase 5
-4. `README.md`: Mention in "Advanced Features" if significant
+3. `README.md`: Mention in "Advanced Features" if significant
+4. `CURRENT_IMPLEMENTATION.md`: Update if implementing now
 
 **Format for Section 10**:
 ```markdown
@@ -455,15 +449,15 @@ Orchestrator validates after T1 completes:
 ## Resources & References
 
 ### Primary Documents (Read These)
-1. **AP.md**: Full protocol specification
-2. **AP_continue.md**: Quick-start variant
-3. **README.md**: Project overview
+1. **README.md**: Project overview and quick start
+2. **AP.md**: Full protocol specification
+3. **AP_continue.md**: Quick-start variant
 4. **PRD.md**: Requirements document
 
-### Understanding Multi-Agent (Read These Next)
-1. **MULTIAGENT_UPGRADE_COMPLETE.md**: Best comprehensive overview
-2. **BEFORE_AFTER_COMPARISON.md**: Visual diagrams and examples
-3. **AP_MULTIAGENT_SUMMARY.md**: Detailed section-by-section changes
+### Implementation & Architecture (Read These Next)
+1. **CURRENT_IMPLEMENTATION.md**: Complete implementation status
+2. **ARCHITECTURE.md**: System architecture and design
+3. **AGENTS.md**: This document (guide for AI agents)
 
 ### Quick References
 - **Scope conflict prevention**: AP.md Section 2.2
@@ -545,14 +539,9 @@ The orchestrator was refactored from log file monitoring to direct stdio communi
 
 **Performance Improvement:** 100× faster real-time communication
 
-**Documentation:**
-- `REFACTORING_MCPSERVERSTDIO.md` - Complete refactoring guide
-- `REFACTORING_SUMMARY.md` - Quick summary
-- Based on: https://developers.openai.com/codex/guides/agents-sdk/
-
-**Key Files:**
-- `mcp_server_stdio.py` - New implementation
-- `mcp_worker_connector.py` - Old implementation (deprecated, kept for reference)
+**Implementation:** `mcp_server_stdio.py` (direct stdin/stdout communication)  
+**Deprecated:** `mcp_worker_connector.py` (old log monitoring approach)  
+**Based on:** https://developers.openai.com/codex/guides/agents-sdk/
 
 ### Three-Phase Documentation System
 
@@ -670,15 +659,17 @@ python orchestrator_enhanced.py
 - Complete autonomous orchestrator foundation (Phases 1 & 2)
 - Full ANALYTIC and PLANNING phases with streaming
 - Mathematical scope validation algorithm
-- Auto-documentation system (like Factory's Droid)
+- MCPServerStdio implementation for worker communication
+- Auto-documentation system
 - SQLite persistence and self-monitoring
 
 **Novel Concepts Introduced:**
 1. **Accomplishment-Centric Documentation** - Every session produces accomplishment report
 2. **Three-Phase Documentation** - Analysis → Plan → Accomplishment
-3. **Self-Documenting System** - Auto-updates README/PRD/AGENTS after each session
+3. **Self-Documenting System** - Auto-updates project documentation
 4. **Mathematical Scope Guarantees** - Provably correct conflict detection
 5. **Real-Time Streaming** - Orchestrator streams its thinking for transparency
+6. **MCPServerStdio** - Direct stdin/stdout MCP protocol (100× faster than log monitoring)
 
 **Coordination Patterns Used:**
 - Single-agent mode for initial implementation
@@ -689,17 +680,19 @@ python orchestrator_enhanced.py
 **Scope Allocation Strategy:**
 - Base implementation in orchestrator.py (data structures, utilities)
 - Enhanced implementation in orchestrator_enhanced.py (complete phases)
+- MCPServerStdio in mcp_server_stdio.py (worker communication)
 - Clean separation enables independent testing
 
 **Integration Points:**
 - orchestrator.py exports data structures used by orchestrator_enhanced.py
-- team.json configuration loaded by both implementations
+- mcp_server_stdio.py provides MCPServerStdio and WorkerPoolManager
+- team.json configuration loaded by all components
 - docs/ structure shared by all orchestrator components
 - SQLite database maintains complete state
 
 **Recommended for Future:**
-- Study SESSION_SUMMARY.md for complete context
-- Review PHASE2_COMPLETE.md for implementation details
+- Study CURRENT_IMPLEMENTATION.md for complete status
+- Review ARCHITECTURE.md for system design
 - Understand three-phase documentation approach
 - Test orchestrator with different request types
 - Add Phase 3: Worker execution via MCP
@@ -721,19 +714,18 @@ python orchestrator_enhanced.py
 
 Before starting work on AP protocol:
 - [ ] Read README.md (10 minutes)
-- [ ] Read MULTIAGENT_UPGRADE_COMPLETE.md Executive Summary (5 minutes)
+- [ ] Read this AGENTS.md completely (20 minutes)
 - [ ] Read AP.md Sections 0-2 (30 minutes)
 - [ ] Review examples in AP.md Section 3 (10 minutes)
 - [ ] Understand scope conflict prevention (AP.md 2.2) (10 minutes)
-- [ ] Read this AGENTS.md completely (20 minutes)
 - [ ] Understand your task's SCOPE_TOUCH/FORBID (always!)
 
-**For Orchestrator Development** (NEW):
-- [ ] Read IMPLEMENTATION_SUMMARY.md (15 minutes)
-- [ ] Read PHASE2_COMPLETE.md (15 minutes)
-- [ ] Review SESSION_SUMMARY.md (20 minutes)
+**For Orchestrator Development:**
+- [ ] Read CURRENT_IMPLEMENTATION.md (20 minutes)
+- [ ] Review ARCHITECTURE.md (15 minutes)
 - [ ] Test orchestrator: `python orchestrator_enhanced.py` (5 minutes)
 - [ ] Understand three-phase documentation system (10 minutes)
+- [ ] Review MCPServerStdio in mcp_server_stdio.py (15 minutes)
 
 **Total time investment**: ~2 hours to fully understand protocol + implementation
 

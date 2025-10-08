@@ -58,11 +58,7 @@ python orchestrator_enhanced.py
 open dashboard.html
 ```
 
-**Documentation:**
-- [REFACTORING_MCPSERVERSTDIO.md](REFACTORING_MCPSERVERSTDIO.md) - Complete implementation guide
-- [REFACTORING_SUMMARY.md](REFACTORING_SUMMARY.md) - Quick summary
-
-**To enable real workers:** Create MCP-compliant worker scripts (see REFACTORING_MCPSERVERSTDIO.md)
+**To enable real workers:** Create MCP-compliant worker scripts with standard MCP protocol (JSON messages via stdin/stdout)
 
 ## Required Artifacts
 When working with the Orchestrator, **always attach**:
@@ -170,12 +166,6 @@ Framework for validating orchestration logic (AP.md Section 9):
 
 ## Documentation Files
 
-### Summary Documents (Read These First)
-- **`MULTIAGENT_UPGRADE_COMPLETE.md`**: Comprehensive overview of AP 2.0 upgrade
-- **`BEFORE_AFTER_COMPARISON.md`**: Visual comparison of AP 1.0 vs AP 2.0
-- **`AP_MULTIAGENT_SUMMARY.md`**: Detailed changes to AP.md
-- **`AP_CONTINUE_MULTIAGENT_SUMMARY.md`**: Detailed changes to AP_continue.md
-
 ### Protocol Specifications
 - **`AP.md`**: Full AP 2.0 protocol (660 lines)
 - **`AP_continue.md`**: Quick-start variant (345 lines)
@@ -191,18 +181,17 @@ Framework for validating orchestration logic (AP.md Section 9):
 ## Getting Started
 
 ### For Understanding the Protocol
-1. **Read** `MULTIAGENT_UPGRADE_COMPLETE.md` for comprehensive overview
+1. **Read** `README.md` (this file) for project overview
 2. **Study** `AP.md` sections 0-2 for multi-agent orchestration basics
 3. **Review** examples in `AP.md` section 3 and `AP_continue.md` section 7
 4. **Understand** scope conflict prevention algorithm (AP.md section 2.2)
-5. **Practice** with single-file changes (AP 1.0 mode) before multi-agent tasks
+5. **Review** `PRD.md` for requirements and acceptance criteria
 
-### For Using the Orchestrator (NEW!)
-1. **Read** `IMPLEMENTATION_SUMMARY.md` for Phase 1 foundation overview
-2. **Read** `PHASE2_COMPLETE.md` for complete implementation details
-3. **Review** `SESSION_SUMMARY.md` for full development context
-4. **Configure** worker agents in `team.json`
-5. **Run** `python orchestrator_enhanced.py` to test the orchestrator
+### For Using the Orchestrator
+1. **Read** `CURRENT_IMPLEMENTATION.md` for complete implementation status
+2. **Configure** worker agents in `team.json`
+3. **Run** `python orchestrator_enhanced.py` to test the orchestrator
+4. **Open** `dashboard.html` to monitor workers in real-time
 
 ### Quick Test
 ```bash

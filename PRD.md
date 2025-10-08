@@ -492,8 +492,3 @@ Assumes ability to merge multiple diffs and run quality gates on integrated resu
 - `README.md`: Project overview
 - `AGENTS.md`: Agent guidelines (this document)
 
-### Summary Documents
-- `MULTIAGENT_UPGRADE_COMPLETE.md`: Comprehensive upgrade overview
-- `BEFORE_AFTER_COMPARISON.md`: Visual comparison
-- `AP_MULTIAGENT_SUMMARY.md`: Detailed AP.md changes
-- `AP_CONTINUE_MULTIAGENT_SUMMARY.md`: Detailed AP_continue.md changes

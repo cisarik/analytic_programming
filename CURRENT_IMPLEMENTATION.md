@@ -161,30 +161,11 @@ analytic_programming/
 ```
 ├── AP.md                              # Protocol specification
 ├── AP_continue.md                     # Quick-start variant
-├── PRD.md                             # Product requirements (updated)
-├── README.md                          # Project overview (updated)
-├── AGENTS.md                          # Agent guide (updated)
-└── ARCHITECTURE.md                    # System architecture
-```
-
-### Current Documentation (Refactoring)
-
-```
-├── REFACTORING_MCPSERVERSTDIO.md      # Complete refactoring guide ✅
-├── REFACTORING_SUMMARY.md             # Quick summary ✅
-└── CURRENT_IMPLEMENTATION.md          # This file ✅
-```
-
-### Deprecated Files (Archived)
-
-```
-docs/archive/
-├── README.md                          # Archive explanation
-├── MCP_INTEGRATION.md                 # Old log monitoring guide
-├── PHASE3_MCP_COMPLETE.md             # Old implementation summary
-├── QUICK_START_MCP.md                 # Old quick start
-├── SESSION_COMPLETE.md                # Old session summary
-└── COMMIT_MESSAGE.md                  # Old commit message
+├── PRD.md                             # Product requirements
+├── README.md                          # Project overview
+├── AGENTS.md                          # Agent guide
+├── ARCHITECTURE.md                    # System architecture
+└── CURRENT_IMPLEMENTATION.md          # This file - current status
 ```
 
 ---
@@ -407,19 +388,19 @@ $ python orchestrator_enhanced.py
 ## Documentation Hierarchy
 
 ### For Users (Getting Started)
-1. **README.md** - Start here
-2. **CURRENT_IMPLEMENTATION.md** - This file (current status)
-3. **REFACTORING_SUMMARY.md** - Quick refactoring summary
+1. **README.md** - Project overview and quick start
+2. **CURRENT_IMPLEMENTATION.md** - This file (comprehensive current status)
+3. **ARCHITECTURE.md** - System architecture and diagrams
 
 ### For Developers (Implementation Details)
-1. **REFACTORING_MCPSERVERSTDIO.md** - Complete technical guide
-2. **ARCHITECTURE.md** - System architecture
-3. **Source code** - `mcp_server_stdio.py`, `orchestrator_enhanced.py`
+1. **Source code** - `mcp_server_stdio.py`, `orchestrator_enhanced.py`
+2. **ARCHITECTURE.md** - System architecture with flow diagrams
+3. **PRD.md** - Product requirements (includes R0: MCPServerStdio)
 
 ### For AI Agents (Working on Project)
-1. **AGENTS.md** - Start here
+1. **AGENTS.md** - Complete guide for AI agents
 2. **AP.md** - Protocol specification
-3. **PRD.md** - Requirements
+3. **PRD.md** - Requirements and acceptance criteria
 
 ---
 

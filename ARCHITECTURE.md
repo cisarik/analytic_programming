@@ -454,11 +454,10 @@ analytic_programming/
 │
 ├── Documentation
 │   ├── README.md                       # Main README
-│   ├── MCP_INTEGRATION.md              # MCP guide
-│   ├── QUICK_START_MCP.md              # Quick start
-│   ├── PHASE3_MCP_COMPLETE.md          # Implementation summary
-│   ├── ARCHITECTURE.md                 # This file
-│   └── COMMIT_MESSAGE.md               # Commit template
+│   ├── ARCHITECTURE.md                 # This file - system architecture
+│   ├── CURRENT_IMPLEMENTATION.md       # Current implementation status
+│   ├── PRD.md                          # Product requirements
+│   └── AGENTS.md                       # Guide for AI agents
 │
 ├── Auto-Generated Docs
 │   └── docs/
