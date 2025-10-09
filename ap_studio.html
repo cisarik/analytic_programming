@@ -74,6 +74,10 @@
             overflow-x: hidden;
         }
 
+        .hidden {
+            display: none !important;
+        }
+
         /* ============================================================
            ANIMATED BACKGROUND
            ============================================================ */
@@ -108,6 +112,33 @@
             padding: 20px;
         }
 
+        .empty-state {
+            margin-top: 80px;
+            padding: 60px 40px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .empty-state h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            max-width: 520px;
+            margin: 0 auto 25px auto;
+        }
+
+        .empty-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
         /* ============================================================
            HEADER
            ============================================================ */
@@ -119,7 +150,7 @@
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             border-radius: 16px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             box-shadow: var(--shadow-md);
             backdrop-filter: blur(10px);
         }
@@ -130,19 +161,28 @@
             gap: 12px;
         }
         
+        .logo nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 20px;
+        }
+        
         .project-selector {
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
+            row-gap: 8px;
         }
         
         .project-dropdown {
-            padding: 9px 14px;
+            padding: 7px 12px;
             background: var(--bg-tertiary);
             border: 1px solid var(--border-medium);
             border-radius: 10px;
             color: var(--text-primary);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             outline: none;
@@ -156,7 +196,7 @@
         }
         
         .new-project-btn {
-            padding: 9px 14px;
+            padding: 7px 14px;
             background: var(--accent-primary);
             border: none;
             border-radius: 10px;
@@ -172,6 +212,23 @@
             background: var(--accent-secondary);
             transform: translateY(-2px);
             box-shadow: var(--shadow-glow);
+        }
+
+        .header-file-tabs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 4px 6px;
+            background: var(--bg-tertiary);
+            overflow-x: auto;
+            flex: 1 1 320px;
+            max-width: 100%;
+        }
+
+        .header-file-tabs.hidden {
+            display: none;
         }
 
         .logo h1 {
@@ -243,38 +300,37 @@
            ============================================================ */
         .tabs {
             display: flex;
-            gap: 7px;
-            margin-bottom: 30px;
-            padding: 7px;
-            background: #000000;
-            border: 1px solid var(--accent-primary);
-            border-radius: 16px;
-            box-shadow: var(--shadow-sm);
+            gap: 8px;
+            padding: 4px;
+            background: transparent;
         }
 
         .tab {
-            flex: 1;
-            padding: 12px 17px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 150px;
+            padding: 6px 14px;
             background: transparent;
-            border: none;
+            border: 1px solid transparent;
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
 
         .tab:hover {
             color: var(--text-primary);
-            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-sm);
         }
 
         .tab.active {
             color: var(--text-primary);
             background: var(--accent-primary);
+            border-color: transparent;
             box-shadow: var(--shadow-glow);
         }
 
@@ -321,34 +377,34 @@
            ============================================================ */
         .brainstorm-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 2fr;
             gap: 20px;
             height: calc(100vh - 250px);
         }
 
-        .chat-panel, .prd-panel {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
+        .chat-panel,
+        .document-panel {
+            background: transparent;
+            border: none;
             border-radius: 16px;
-            padding: 17px;
-            box-shadow: var(--shadow-md);
+            padding: 0;
             display: flex;
             flex-direction: column;
         }
 
-        .panel-header {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-subtle);
+        .document-content {
+            flex: 1;
+            overflow-y: auto;
         }
 
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding-right: 10px;
+            padding: 17px;
             margin-bottom: 20px;
+            background: #000000;
+            border: 1px solid var(--border-medium);
+            border-radius: 12px;
         }
 
         .message {
@@ -505,50 +561,6 @@
             100% { background: rgba(74, 222, 128, 0.15); }
         }
         
-        /* File Selector & Tabs */
-        .file-selector-dropdown {
-            flex: 1;
-            padding: 6px 10px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-medium);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        
-        .file-selector-dropdown:hover {
-            border-color: var(--accent-primary);
-        }
-        
-        .file-open-btn {
-            padding: 6px 14px;
-            background: var(--accent-primary);
-            border: none;
-            border-radius: 8px;
-            color: var(--bg-primary);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        
-        .file-open-btn:hover {
-            background: var(--accent-secondary);
-            transform: translateY(-1px);
-        }
-        
-        .file-tabs {
-            display: flex;
-            gap: 5px;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-subtle);
-            overflow-x: auto;
-        }
-        
         .file-tab {
             padding: 6px 12px;
             background: transparent;
@@ -586,16 +598,32 @@
         .file-content {
             flex: 1;
             overflow-y: auto;
-            padding-top: 10px;
+            margin-top: 12px;
         }
         
         .file-view {
             display: none;
             height: 100%;
+            padding: 17px;
+            background: #000000;
+            border: 1px solid var(--accent-primary);
+            border-radius: 12px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.8;
         }
         
         .file-view.active {
             display: block;
+        }
+
+        .file-empty-state {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
         
         /* Clickable MD Sections */
@@ -690,9 +718,9 @@
                 height: auto;
             }
 
-            .prd-panel {
-                height: 400px;
-            }
+        .chat-panel {
+            margin-top: 15px;
+        }
         }
 
         @media (max-width: 768px) {
@@ -1150,6 +1178,19 @@
         <header>
             <div class="logo">
                 <h1>🌲 AP Studio</h1>
+                <nav class="tabs">
+                    <button class="tab active" onclick="switchTab('brainstorm')">
+                        💬 Brainstorming
+                    </button>
+                    <button class="tab" onclick="switchTab('workers')">
+                        👷 Workers
+                    </button>
+                    <button class="tab" onclick="switchTab('orchestration')">
+                        🎭 Orchestration
+                    </button>
+                </nav>
+            </div>
+            <div class="header-actions">
                 <div class="project-selector">
                     <select class="project-dropdown" id="projectDropdown" onchange="switchProject()">
                         <option value="">Select project...</option>
@@ -1158,8 +1199,6 @@
                         ➕ New project
                     </button>
                 </div>
-            </div>
-            <div class="header-actions">
                 <div class="status-badge">
                     <div class="status-dot"></div>
                     <span id="statusText">Pripojené</span>
@@ -1170,156 +1209,139 @@
             </div>
         </header>
 
-        <!-- TABS -->
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('brainstorm')">
-                💬 Brainstorming
-            </button>
-            <button class="tab" onclick="switchTab('workers')">
-                👷 Workers
-            </button>
-            <button class="tab" onclick="switchTab('orchestration')">
-                🎭 Orchestration
-            </button>
+        <div id="emptyState" class="empty-state">
+            <h2>Welcome to AP Studio</h2>
+            <p>Začni vytvorením nového projektu. AP Studio pripraví adresár v <code>~/.ap/projects/</code>, všetky kľúčové súbory a je pripravené brainstormovať.</p>
+            <div class="empty-actions">
+                <button class="new-project-btn" onclick="createNewProject()">
+                    ➕ New project
+                </button>
+            </div>
         </div>
 
-        <!-- BRAINSTORM CONTENT -->
-        <div id="brainstorm" class="content active">
-            <div class="brainstorm-container">
-                <!-- Chat Panel -->
-                <div class="chat-panel">
-                    <div class="panel-header">💬 Brainstorm Helper</div>
-                    
-                    <div class="chat-messages" id="chatMessages">
-                        <!-- Messages will be added here -->
-                    </div>
-                    
-                    <div class="chat-input-container">
-                        <input 
-                            type="text" 
-                            class="chat-input" 
-                            id="chatInput"
-                            placeholder="Napíš správu..." 
-                            onkeypress="handleKeyPress(event)"
-                        />
-                        <button class="send-button" onclick="sendMessage()">
-                            Poslať 📤
-                        </button>
-                    </div>
-                </div>
+        <div id="appBody" class="hidden">
+            <div class="header-file-tabs hidden" id="headerFileTabs"></div>
 
-                <!-- PRD Panel (now multi-file viewer) -->
-                <div class="prd-panel">
-                    <!-- File Selector Header -->
-                    <div class="panel-header" style="display: flex; align-items: center; gap: 10px; padding-bottom: 8px;">
-                        <div style="flex: 1; display: flex; align-items: center; gap: 8px;">
-                            <select class="file-selector-dropdown" id="fileSelector" onchange="handleFileSelection()">
-                                <option value="">📂 Project Context...</option>
-                            </select>
-                            <button class="file-open-btn" onclick="openSelectedFile()">
-                                Open
+            <!-- BRAINSTORM CONTENT -->
+            <div id="brainstorm" class="content active">
+                <div class="brainstorm-container">
+                    <div class="chat-panel">
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Messages will be added here -->
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <input 
+                                type="text" 
+                                class="chat-input" 
+                                id="chatInput"
+                                placeholder="Napíš správu..." 
+                                onkeypress="handleKeyPress(event)"
+                            />
+                            <button class="send-button" onclick="sendMessage()">
+                                Poslať 📤
                             </button>
                         </div>
                     </div>
-                    
-                    <!-- File Tabs -->
-                    <div class="file-tabs" id="fileTabs">
-                        <button class="file-tab active" data-file="PRD.md" onclick="switchFileTab('PRD.md')">
-                            📝 PRD.md
-                        </button>
-                    </div>
-                    
-                    <!-- File Content -->
-                    <div class="file-content" id="fileContent">
-                        <div class="file-view active" id="file-PRD.md">
-                            <div class="prd-preview" id="prdPreview">
-                                <p style="opacity: 0.5;">PRD.md sa vytvorí počas brainstormingu...</p>
+
+                    <div class="document-panel">
+                        <div class="document-content" id="fileContent">
+                            <div class="file-empty-state" id="fileEmptyState">
+                                Vyber projekt a dokumentácia sa zobrazí tu.
+                            </div>
+                            <div class="file-view" id="file-PRD.md">
+                                <div class="prd-preview" id="prdPreview">
+                                    <p style="opacity: 0.5;">PRD.md sa vytvorí počas brainstormingu...</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="action-bar">
-                        <button class="action-button" onclick="saveCurrentFile()">
-                            💾 Save
-                        </button>
-                        <button class="action-button primary" onclick="startOrchestration()">
-                            🚀 Spustiť Orchestráciu
-                        </button>
+                        
+                        <div class="action-bar">
+                            <button class="action-button" onclick="saveCurrentFile()">
+                                💾 Save Active Tab
+                            </button>
+                            <button class="action-button" id="savePrdButton" onclick="savePRD()" style="display: none;">
+                                💾 Save PRD
+                            </button>
+                            <button class="action-button primary" onclick="startOrchestration()">
+                                🚀 Spustiť Orchestráciu
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- WORKERS CONTENT -->
-        <div id="workers" class="content">
-            <div class="workers-header">
-                <h2>👷 Workers Management</h2>
-                <button class="action-button primary" onclick="showAddWorkerModal()">
-                    ➕ Add Worker
-                </button>
-            </div>
-
-            <div class="workers-grid" id="workersGrid">
-                <!-- Worker cards will be added here -->
-            </div>
-
-            <!-- Add Worker Modal -->
-            <div id="addWorkerModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>➕ Add New Worker</h3>
-                        <button class="modal-close" onclick="closeAddWorkerModal()">✕</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Worker ID</label>
-                            <input type="text" id="newWorkerID" placeholder="claude-main" class="form-input" />
-                        </div>
-                        <div class="form-group">
-                            <label>Agent Type</label>
-                            <select id="newWorkerType" class="form-input">
-                                <option value="claude">Claude</option>
-                                <option value="gpt4">GPT-4</option>
-                                <option value="codex">Codex</option>
-                                <option value="deepseek">DeepSeek</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Command</label>
-                            <input type="text" id="newWorkerCommand" placeholder="python" class="form-input" />
-                        </div>
-                        <div class="form-group">
-                            <label>Args (comma separated)</label>
-                            <input type="text" id="newWorkerArgs" placeholder="workers/claude_worker.py" class="form-input" />
-                        </div>
-                        <div class="form-group">
-                            <label>Max Concurrent Tasks</label>
-                            <input type="number" id="newWorkerConcurrent" value="1" class="form-input" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="action-button" onclick="closeAddWorkerModal()">Cancel</button>
-                        <button class="action-button primary" onclick="addWorker()">Add Worker</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ORCHESTRATION CONTENT -->
-        <div id="orchestration" class="content">
-            <div class="orch-header">
-                <h2>🎭 Orchestration Monitor</h2>
-                <div class="orch-controls">
-                    <button class="action-button" onclick="loadOrchestrations()">
-                        🔄 Refresh
+            <!-- WORKERS CONTENT -->
+            <div id="workers" class="content">
+                <div class="workers-header">
+                    <h2>👷 Workers Management</h2>
+                    <button class="action-button primary" onclick="showAddWorkerModal()">
+                        ➕ Add Worker
                     </button>
                 </div>
+
+                <div class="workers-grid" id="workersGrid">
+                    <!-- Worker cards will be added here -->
+                </div>
+
+                <!-- Add Worker Modal -->
+                <div id="addWorkerModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>➕ Add New Worker</h3>
+                            <button class="modal-close" onclick="closeAddWorkerModal()">✕</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Worker ID</label>
+                                <input type="text" id="newWorkerID" placeholder="claude-main" class="form-input" />
+                            </div>
+                            <div class="form-group">
+                                <label>Agent Type</label>
+                                <select id="newWorkerType" class="form-input">
+                                    <option value="claude">Claude</option>
+                                    <option value="gpt4">GPT-4</option>
+                                    <option value="codex">Codex</option>
+                                    <option value="deepseek">DeepSeek</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Command</label>
+                                <input type="text" id="newWorkerCommand" placeholder="python" class="form-input" />
+                            </div>
+                            <div class="form-group">
+                                <label>Args (comma separated)</label>
+                                <input type="text" id="newWorkerArgs" placeholder="workers/claude_worker.py" class="form-input" />
+                            </div>
+                            <div class="form-group">
+                                <label>Max Concurrent Tasks</label>
+                                <input type="number" id="newWorkerConcurrent" value="1" class="form-input" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="action-button" onclick="closeAddWorkerModal()">Cancel</button>
+                            <button class="action-button primary" onclick="addWorker()">Add Worker</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="orchestrationContent">
-                <p style="opacity: 0.6; text-align: center; padding: 40px;">
-                    No active orchestrations. Start one from Brainstorming tab.
-                </p>
+            <!-- ORCHESTRATION CONTENT -->
+            <div id="orchestration" class="content">
+                <div class="orch-header">
+                    <h2>🎭 Orchestration Monitor</h2>
+                    <div class="orch-controls">
+                        <button class="action-button" onclick="loadOrchestrations()">
+                            🔄 Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div id="orchestrationContent">
+                    <p style="opacity: 0.6; text-align: center; padding: 40px;">
+                        No active orchestrations. Start one from Brainstorming tab.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -1507,6 +1529,7 @@
         
         function updatePRD(content, changes = []) {
             currentPRD = content;
+            ensureFileView('PRD.md');
             
             // Parse content into lines
             const lines = content.split('\n');
@@ -1517,6 +1540,7 @@
             
             // Render markdown with highlighting
             const preview = document.getElementById('prdPreview');
+            if (!preview) return;
             preview.innerHTML = renderPRDWithHighlights(content, changes);
         }
         
@@ -2073,34 +2097,166 @@
         let projects = {};
         let projectFiles = {};  // Loaded project files
         let loadedFiles = new Set();  // Files loaded as context
-        let openTabs = new Set(['PRD.md']);  // Open file tabs
-        let currentFile = 'PRD.md';  // Currently active file
+        let openTabs = new Set();  // Open file tabs
+        let currentFile = null;  // Currently active file
+        
+        function updateProjectUI() {
+            const hasProject = Boolean(currentProjectId);
+            const appBody = document.getElementById('appBody');
+            const emptyState = document.getElementById('emptyState');
+            const headerTabs = document.getElementById('headerFileTabs');
+            if (appBody) {
+                appBody.classList.toggle('hidden', !hasProject);
+            }
+            if (emptyState) {
+                emptyState.classList.toggle('hidden', hasProject);
+            }
+            if (headerTabs) {
+                if (!hasProject || headerTabs.childElementCount === 0) {
+                    headerTabs.classList.add('hidden');
+                } else {
+                    headerTabs.classList.remove('hidden');
+                }
+            }
+        }
+        
+        async function activateProject(projectId) {
+            const id = projectId ? String(projectId) : null;
+            if (!id || !projects[id]) {
+                currentProjectId = null;
+                updateProjectUI();
+                return;
+            }
+            
+            const dropdown = document.getElementById('projectDropdown');
+            if (dropdown) {
+                dropdown.value = id;
+            }
+            
+            currentProjectId = id;
+            const project = projects[id];
+            console.log(`Switched to project: ${project.name}`);
+            
+            try {
+                await loadProjectFiles(project.name);
+                updateDocumentTitle(currentFile);
+            } finally {
+                updateProjectUI();
+            }
+        }
+        
+        function getFileViewId(filename) {
+            return `file-${filename.replace(/[^\w.-]/g, '_')}`;
+        }
 
-        async function loadProjects() {
+        function ensureFileView(filename) {
+            const fileContent = document.getElementById('fileContent');
+            if (!fileContent) return null;
+
+            const emptyState = document.getElementById('fileEmptyState');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            const viewId = getFileViewId(filename);
+            let fileView = document.getElementById(viewId);
+            if (!fileView) {
+                fileView = document.createElement('div');
+                fileView.className = 'file-view';
+                fileView.id = viewId;
+                fileContent.appendChild(fileView);
+            }
+
+            if (filename === 'PRD.md' && !fileView.querySelector('#prdPreview')) {
+                const preview = document.createElement('div');
+                preview.className = 'prd-preview';
+                preview.id = 'prdPreview';
+                preview.innerHTML = '<p style="opacity: 0.5;">PRD.md sa vytvorí počas brainstormingu...</p>';
+                fileView.appendChild(preview);
+            }
+
+            return fileView;
+        }
+
+        function updateDocumentTitle(filename) {
+            const titleEl = document.getElementById('documentTitle');
+            const savePrdBtn = document.getElementById('savePrdButton');
+            
+            if (!titleEl) return;
+            
+            if (!filename || !projectFiles[filename]) {
+                titleEl.textContent = '📄 Aktívny súbor';
+                if (savePrdBtn) savePrdBtn.style.display = 'none';
+                return;
+            }
+            
+            const icon = projectFiles[filename].icon || '📄';
+            titleEl.textContent = `${icon} ${filename}`;
+            
+            if (savePrdBtn) {
+                savePrdBtn.style.display = filename === 'PRD.md' ? '' : 'none';
+            }
+        }
+
+        function resetDocumentView(message = 'Vyber projekt a dokumentácia sa zobrazí tu.') {
+            const fileContent = document.getElementById('fileContent');
+            if (!fileContent) return;
+
+            fileContent.innerHTML = `
+                <div class="file-empty-state" id="fileEmptyState">
+                    ${message}
+                </div>
+                <div class="file-view" id="file-PRD.md">
+                    <div class="prd-preview" id="prdPreview">
+                        <p style="opacity: 0.5;">PRD.md sa vytvorí počas brainstormingu...</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadProjects(selectProjectId = null) {
             try {
                 const response = await fetch('http://localhost:8000/api/projects');
                 const data = await response.json();
                 
                 const dropdown = document.getElementById('projectDropdown');
                 dropdown.innerHTML = '<option value="">Select project...</option>';
+                projects = {};
                 
                 if (data.projects && data.projects.length > 0) {
                     data.projects.forEach(project => {
-                        projects[project.id] = project;
+                        const id = String(project.id);
+                        projects[id] = project;
                         const option = document.createElement('option');
-                        option.value = project.id;
+                        option.value = id;
                         option.textContent = project.name;
                         dropdown.appendChild(option);
                     });
                     
-                    // Auto-select first project if none selected
-                    if (!currentProjectId && data.projects.length > 0) {
-                        dropdown.value = data.projects[0].id;
-                        currentProjectId = data.projects[0].id;
+                    let targetId = selectProjectId !== null ? String(selectProjectId) : null;
+                    if (targetId && !projects[targetId]) {
+                        targetId = null;
                     }
+                    
+                    if (!targetId && currentProjectId && projects[currentProjectId]) {
+                        targetId = currentProjectId;
+                    }
+                    
+                    if (!targetId) {
+                        targetId = String(data.projects[0].id);
+                    }
+                    
+                    await activateProject(targetId);
+                } else {
+                    currentProjectId = null;
+                    updateDocumentTitle(null);
+                    updateProjectUI();
                 }
             } catch (error) {
                 console.error('Failed to load projects:', error);
+                currentProjectId = null;
+                updateDocumentTitle(null);
+                updateProjectUI();
             }
         }
 
@@ -2108,18 +2264,28 @@
             const dropdown = document.getElementById('projectDropdown');
             const projectId = dropdown.value;
             
-            if (!projectId) return;
+            if (!projectId) {
+                currentProjectId = null;
+                projectFiles = {};
+                openTabs.clear();
+                loadedFiles.clear();
+                const headerTabs = document.getElementById('headerFileTabs');
+                if (headerTabs) {
+                    headerTabs.innerHTML = '';
+                    headerTabs.classList.add('hidden');
+                }
+                resetDocumentView();
+                updateDocumentTitle(null);
+                updateProjectUI();
+                return;
+            }
             
-            currentProjectId = projectId;
-            const project = projects[projectId];
-            
-            console.log(`Switched to project: ${project.name}`);
-            
-            // Load project files
-            await loadProjectFiles(project.name);
+            await activateProject(projectId);
         }
         
         async function loadProjectFiles(projectName) {
+            if (!projectName) return;
+
             try {
                 const response = await fetch(`http://localhost:8000/api/projects/${projectName}/files`);
                 const data = await response.json();
@@ -2127,91 +2293,140 @@
                 if (data.files) {
                     projectFiles = {};
                     loadedFiles.clear();
+                    openTabs.clear();
                     
-                    // Populate file selector dropdown
-                    const fileSelector = document.getElementById('fileSelector');
-                    fileSelector.innerHTML = '<option value="">📂 Project Context...</option>';
+                    const headerTabs = document.getElementById('headerFileTabs');
+
+                    if (headerTabs) {
+                        headerTabs.innerHTML = '';
+                        headerTabs.classList.add('hidden');
+                    }
+
+                    resetDocumentView();
                     
                     data.files.forEach(file => {
                         projectFiles[file.name] = file;
-                        
-                        // Check if loaded as context
-                        const isLoaded = file.loaded || false;
-                        if (isLoaded) {
+                        if (file.loaded) {
                             loadedFiles.add(file.name);
                         }
-                        
-                        const checkmark = isLoaded ? '✅ ' : '';
-                        const option = document.createElement('option');
-                        option.value = file.name;
-                        option.textContent = `${checkmark}${file.icon} ${file.name}`;
-                        fileSelector.appendChild(option);
                     });
                     
                     console.log(`✓ Loaded ${data.files.length} files for ${projectName}`);
                     console.log(`✓ Context files: ${Array.from(loadedFiles).join(', ')}`);
+                    
+                    const prdFile = projectFiles['PRD.md'];
+                    if (prdFile) {
+                        updatePRD(prdFile.content || '', prdFile.changes || []);
+                    } else {
+                        currentPRD = '';
+                        prdHistory = {};
+                        prdLineMap = {};
+                        const preview = document.getElementById('prdPreview');
+                        if (preview) {
+                            preview.innerHTML = '<p style="opacity: 0.5;">PRD.md sa vytvorí počas brainstormingu...</p>';
+                        }
+                    }
+                    
+                    const priorityOrder = ['README.md', 'PRD.md', 'CURRENT_IMPLEMENTATION.md', 'AGENTS.md'];
+                    const sortedFiles = data.files
+                        .slice()
+                        .sort((a, b) => {
+                            const aPriority = priorityOrder.indexOf(a.name);
+                            const bPriority = priorityOrder.indexOf(b.name);
+                            const aRank = aPriority === -1 ? 99 : aPriority;
+                            const bRank = bPriority === -1 ? 99 : bPriority;
+                            if (aRank !== bRank) {
+                                return aRank - bRank;
+                            }
+                            return a.name.localeCompare(b.name);
+                        });
+                    
+                    let firstTab = null;
+                    sortedFiles.forEach(file => {
+                        addFileTab(file.name, { pinned: file.name === 'README.md' });
+                        updateFileTabContent(file.name, file.content || '', file.changes || []);
+                        
+                        if (!firstTab) {
+                            firstTab = file.name;
+                        }
+                        if (file.name === 'README.md') {
+                            firstTab = file.name;
+                        }
+                    });
+                    
+                    if (firstTab) {
+                        switchFileTab(firstTab);
+                    } else {
+                        currentFile = null;
+                        updateDocumentTitle(null);
+                    }
                 }
             } catch (error) {
                 console.error('Failed to load project files:', error);
+                resetDocumentView('Nepodarilo sa načítať súbory projektu. Skús obnoviť alebo vybrať projekt znova.');
+                updateDocumentTitle(null);
             }
         }
         
-        function handleFileSelection() {
-            // Just update dropdown, file opens on "Open" button click
-            const fileSelector = document.getElementById('fileSelector');
-            const filename = fileSelector.value;
-            
-            if (filename) {
-                fileSelector.style.borderColor = 'var(--accent-primary)';
-            } else {
-                fileSelector.style.borderColor = '';
-            }
-        }
-        
-        function openSelectedFile() {
-            const fileSelector = document.getElementById('fileSelector');
-            const filename = fileSelector.value;
-            
-            if (!filename) {
-                alert('⚠️ Vyber súbor zo zoznamu');
+        function addFileTab(filename, { pinned = false } = {}) {
+            if (openTabs.has(filename)) {
+                const existing = document.querySelector(`.file-tab[data-file="${filename}"]`);
+                if (existing && pinned) {
+                    existing.dataset.pinned = 'true';
+                    const closeBtn = existing.querySelector('.close-tab');
+                    if (closeBtn) {
+                        closeBtn.remove();
+                    }
+                }
+                ensureFileView(filename);
                 return;
             }
-            
-            // Add to open tabs
-            if (!openTabs.has(filename)) {
-                openTabs.add(filename);
-                addFileTab(filename);
-            }
-            
-            // Switch to this file
-            switchFileTab(filename);
-            
-            // Load content if not already loaded
-            if (!document.getElementById(`file-${filename}`)) {
-                loadFileContent(filename);
-            }
-        }
-        
-        function addFileTab(filename) {
+
             const file = projectFiles[filename];
             if (!file) return;
             
-            const fileTabs = document.getElementById('fileTabs');
+            const fileTabs = document.getElementById('headerFileTabs');
+            if (!fileTabs) return;
+
+            openTabs.add(filename);
             
             const tab = document.createElement('button');
             tab.className = 'file-tab';
             tab.dataset.file = filename;
+            if (pinned) {
+                tab.dataset.pinned = 'true';
+            }
             tab.onclick = () => switchFileTab(filename);
-            tab.innerHTML = `
-                ${file.icon} ${filename}
-                <span class="close-tab" onclick="closeFileTab(event, '${filename}')">✕</span>
-            `;
+
+            if (loadedFiles.has(filename)) {
+                const indicator = document.createElement('span');
+                indicator.className = 'file-loaded-icon';
+                indicator.textContent = '✅';
+                tab.appendChild(indicator);
+            }
+
+            const label = document.createElement('span');
+            const icon = file.icon || '📄';
+            label.textContent = `${icon} ${filename}`;
+            tab.appendChild(label);
+
+            if (!pinned) {
+                const closeBtn = document.createElement('span');
+                closeBtn.className = 'close-tab';
+                closeBtn.textContent = '✕';
+                closeBtn.onclick = (event) => closeFileTab(event, filename);
+                tab.appendChild(closeBtn);
+            }
             
             fileTabs.appendChild(tab);
+            fileTabs.classList.remove('hidden');
+            ensureFileView(filename);
         }
         
         function switchFileTab(filename) {
+            if (!filename) return;
             currentFile = filename;
+            updateDocumentTitle(filename);
             
             // Update tab active state
             document.querySelectorAll('.file-tab').forEach(tab => {
@@ -2219,37 +2434,47 @@
             });
             
             // Update file view active state
+            const viewId = getFileViewId(filename);
+            ensureFileView(filename);
             document.querySelectorAll('.file-view').forEach(view => {
-                view.classList.toggle('active', view.id === `file-${filename}`);
+                view.classList.toggle('active', view.id === viewId);
             });
         }
         
         function closeFileTab(event, filename) {
             event.stopPropagation();
             
-            if (filename === 'PRD.md') {
-                alert('⚠️ PRD.md nemôžeš zatvoriť');
+            const tab = document.querySelector(`.file-tab[data-file="${filename}"]`);
+            if (tab && tab.dataset.pinned === 'true') {
+                alert(`⚠️ ${filename} nemôžeš zatvoriť - je pripnutý k projektu`);
                 return;
             }
             
-            // Remove from open tabs
             openTabs.delete(filename);
             
-            // Remove tab element
-            const tab = document.querySelector(`.file-tab[data-file="${filename}"]`);
             if (tab) {
                 tab.remove();
             }
             
-            // Remove file view
-            const view = document.getElementById(`file-${filename}`);
+            const view = document.getElementById(getFileViewId(filename));
             if (view) {
                 view.remove();
             }
             
-            // Switch to PRD.md if this was active
             if (currentFile === filename) {
-                switchFileTab('PRD.md');
+                const fallbackTab = document.querySelector('.file-tab');
+                if (fallbackTab) {
+                    switchFileTab(fallbackTab.dataset.file);
+                } else {
+                    currentFile = null;
+                    resetDocumentView();
+                    updateDocumentTitle(null);
+                }
+            }
+            
+            const headerTabs = document.getElementById('headerFileTabs');
+            if (headerTabs && headerTabs.childElementCount === 0) {
+                headerTabs.classList.add('hidden');
             }
         }
         
@@ -2257,19 +2482,20 @@
             const file = projectFiles[filename];
             if (!file) return;
             
-            const fileContent = document.getElementById('fileContent');
-            
-            const fileView = document.createElement('div');
-            fileView.className = 'file-view';
-            fileView.id = `file-${filename}`;
-            
-            // Render markdown with clickable sections
-            fileView.innerHTML = renderClickableMarkdown(file.content, filename);
-            
-            fileContent.appendChild(fileView);
-            
-            // Switch to this file
+            updateFileTabContent(filename, file.content || '', file.changes || []);
             switchFileTab(filename);
+        }
+        
+        function updateFileTabContent(filename, content, changes = []) {
+            const fileView = ensureFileView(filename);
+            if (!fileView) return;
+            
+            if (filename === 'PRD.md') {
+                updatePRD(content || '', changes);
+                return;
+            }
+            
+            fileView.innerHTML = renderClickableMarkdown(content || '', filename);
         }
         
         function renderClickableMarkdown(content, filename) {
@@ -2319,6 +2545,10 @@
         }
         
         function saveCurrentFile() {
+            if (!currentFile) {
+                alert('⚠️ Najprv vyber panel so súborom.');
+                return;
+            }
             // Save current file content
             alert(`💾 Saving ${currentFile}...`);
             
@@ -2343,14 +2573,20 @@
                     name: projectName.trim()
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.id) {
-                    loadProjects().then(() => {
-                        document.getElementById('projectDropdown').value = data.id;
-                        currentProjectId = data.id;
-                        alert(`✓ Projekt "${projectName}" bol vytvorený!`);
-                    });
+            .then(async response => {
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.detail || 'Neznáma chyba servera');
+                }
+                return response.json();
+            })
+            .then(async data => {
+                if (data.success && data.project_id) {
+                    const newId = String(data.project_id);
+                    await loadProjects(newId);
+                    alert(`✓ Projekt "${projectName.trim()}" bol vytvorený!`);
+                } else {
+                    throw new Error('Server neposlal platnú odpoveď.');
                 }
             })
             .catch(error => {
@@ -2378,4 +2614,3 @@
     </script>
 </body>
 </html>
-

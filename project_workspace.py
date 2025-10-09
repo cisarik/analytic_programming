@@ -146,6 +146,37 @@ This document is loaded by brainstorming agent on session start.
 ---
 *Click on any section to send to brainstorming agent*
 """,
+
+        "CURRENT_IMPLEMENTATION.md": """# {project_name} - Current Implementation Snapshot
+
+**Generated:** {created_date}  
+**Last Updated:** {updated_date}
+
+## Architecture Overview
+(Summarize the current system design)
+
+## Key Components
+- Component 1: (TBD)
+- Component 2: (TBD)
+- Component 3: (TBD)
+
+## Recent Changes
+- Change 1: (TBD)
+- Change 2: (TBD)
+- Change 3: (TBD)
+
+## Metrics & Health
+- Tests Passing: (TBD)
+- Coverage: (TBD)
+- Performance Notes: (TBD)
+
+## Open Questions
+- Question 1: (TBD)
+- Question 2: (TBD)
+
+---
+*Use this doc to keep AP Studio aligned with the latest implementation*
+""",
         
         "TODOs.md": """# {project_name} - Tasks & TODOs
 
@@ -273,6 +304,19 @@ This document is loaded by brainstorming agent on session start.
             )
             file_path.write_text(content)
         
+        # Create sessions directory
+        sessions_dir = project_dir / "sessions"
+        sessions_dir.mkdir(parents=True, exist_ok=True)
+
+        # Create tools directory and copy step.sh
+        tools_dir = project_dir / "tools"
+        tools_dir.mkdir(parents=True, exist_ok=True)
+        repo_root = Path(__file__).resolve().parent
+        step_source = repo_root / "tools" / "step.sh"
+        step_target = tools_dir / "step.sh"
+        if step_source.exists():
+            shutil.copy2(step_source, step_target)
+        
         # Initialize git repo
         try:
             import subprocess
@@ -341,6 +385,7 @@ This document is loaded by brainstorming agent on session start.
             "README.md": "📖",
             "PRD.md": "📝",
             "AGENTS.md": "🤖",
+            "CURRENT_IMPLEMENTATION.md": "⚙️",
             "TODOs.md": "📋",
             "BUGs.md": "🐛",
             "FEATURES.md": "⚡"
@@ -358,7 +403,15 @@ This document is loaded by brainstorming agent on session start.
             ))
         
         # Sort by priority
-        priority_order = ["README.md", "AGENTS.md", "PRD.md", "FEATURES.md", "TODOs.md", "BUGs.md"]
+        priority_order = [
+            "README.md",
+            "CURRENT_IMPLEMENTATION.md",
+            "AGENTS.md",
+            "PRD.md",
+            "FEATURES.md",
+            "TODOs.md",
+            "BUGs.md"
+        ]
         files.sort(key=lambda f: priority_order.index(f.name) if f.name in priority_order else 99)
         
         return files
@@ -469,4 +522,3 @@ def demo():
 
 if __name__ == "__main__":
     demo()
-
