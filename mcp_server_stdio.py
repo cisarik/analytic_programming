@@ -39,6 +39,7 @@ class MCPMessageType(Enum):
     EXECUTE_TASK = "execute_task"
     CANCEL_TASK = "cancel_task"
     SHUTDOWN = "shutdown"
+    LIST_TOOLS = "list_tools"  # NEW: Request list of available tools
     
     # Server → Client
     INITIALIZED = "initialized"
@@ -48,6 +49,7 @@ class MCPMessageType(Enum):
     TASK_COMPLETE = "task_complete"
     TASK_ERROR = "task_error"
     LOG = "log"
+    TOOLS_RESPONSE = "tools_response"  # NEW: Response with available tools
 
 @dataclass
 class MCPMessage:
@@ -97,6 +99,15 @@ class MCPWorkerConfig:
     env: Dict[str, str]
     max_concurrent_tasks: int = 1
     enabled: bool = True
+
+@dataclass
+class MCPTool:
+    """Description of an MCP tool"""
+    name: str
+    description: str
+    parameters: Dict[str, Any] = field(default_factory=dict)
+    returns: Optional[str] = None
+    examples: List[str] = field(default_factory=list)
 
 @dataclass
 class WorkerActivity:
@@ -432,6 +443,18 @@ class MCPServerStdio:
                 description=message_text
             )
             await self._on_activity(activity)
+        
+        elif msg_type == MCPMessageType.TOOLS_RESPONSE.value:
+            # Handle TOOLS_RESPONSE from worker
+            request_id = payload.get('request_id')
+            tools_data = payload.get('tools', [])
+            
+            # Find pending request and resolve future
+            if hasattr(self, '_pending_requests') and request_id in self._pending_requests:
+                future = self._pending_requests[request_id]
+                if not future.done():
+                    future.set_result(tools_data)
+                    print(f"✓ Worker {self.config.worker_id} listed {len(tools_data)} tools")
     
     async def _on_activity(self, activity: WorkerActivity):
         """Handle new activity from worker"""
@@ -474,6 +497,55 @@ class MCPServerStdio:
             'files_modified': task.get('scope_touch', []),
             'worker_id': self.config.worker_id
         }
+    
+    async def list_tools(self, timeout: float = 10.0) -> List[MCPTool]:
+        """
+        Request list of available tools from worker
+        
+        Returns:
+            List of MCPTool objects describing available tools
+        
+        Raises:
+            TimeoutError: If worker doesn't respond within timeout
+        """
+        # Create future for response
+        response_future = asyncio.Future()
+        request_id = f"list_tools_{self.message_id_counter}"
+        
+        # Store future for response handler
+        if not hasattr(self, '_pending_requests'):
+            self._pending_requests = {}
+        self._pending_requests[request_id] = response_future
+        
+        # Send LIST_TOOLS request
+        await self._send_message(MCPMessageType.LIST_TOOLS, {
+            'request_id': request_id
+        })
+        
+        try:
+            # Wait for TOOLS_RESPONSE
+            tools_data = await asyncio.wait_for(response_future, timeout=timeout)
+            
+            # Parse into MCPTool objects
+            tools = []
+            for tool_data in tools_data:
+                tools.append(MCPTool(
+                    name=tool_data.get('name', 'unknown'),
+                    description=tool_data.get('description', ''),
+                    parameters=tool_data.get('parameters', {}),
+                    returns=tool_data.get('returns'),
+                    examples=tool_data.get('examples', [])
+                ))
+            
+            return tools
+        
+        except asyncio.TimeoutError:
+            raise TimeoutError(
+                f"Worker {self.config.worker_id} didn't respond to LIST_TOOLS within {timeout}s"
+            )
+        finally:
+            # Clean up pending request
+            self._pending_requests.pop(request_id, None)
     
     async def stop(self):
         """Stop worker process"""

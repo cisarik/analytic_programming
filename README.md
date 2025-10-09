@@ -23,6 +23,8 @@ Analytic Programming (AP) is a collaboration protocol between the Owner, Orchest
 - **`orchestrator.py`**: Base orchestrator (~900 lines) - data structures, documentation generation, auto-documentation engine
 - **`orchestrator_enhanced.py`**: Complete orchestrator (~900 lines) - full ANALYTIC/PLANNING/EXECUTION phases with streaming
 - **`mcp_server_stdio.py`**: MCP worker manager (~650 lines) - direct stdio communication using OpenAI Codex SDK pattern
+- **`mcp_capability_discovery.py`**: Automatic capability discovery system (~400 lines) - LLM-powered worker analysis
+- **`discover_worker.py`**: CLI tool for discovering worker capabilities with interactive UI
 - **`dashboard.html`**: Real-time dashboard UI for monitoring worker activity and metrics
 - **`team.json`**: Worker configuration (Claude, GPT-4, Codex) with MCP connection details
 - **`docs/`**: Auto-generated documentation (accomplishments, analyses, plans, sessions)
@@ -59,6 +61,42 @@ open dashboard.html
 ```
 
 **To enable real workers:** Create MCP-compliant worker scripts with standard MCP protocol (JSON messages via stdin/stdout)
+
+### MCP Capability Discovery - Automatic Worker Analysis 🔍
+
+**New Feature (October 2025)**: Automaticky objavuje schopnosti (capabilities) MCP serverov pomocou LLM analýzy.
+
+**Workflow:**
+```
+1. Spusti MCP worker → 2. Získa zoznam tools (LIST_TOOLS)
+3. Analyzuje cez LLM API → 4. Vygeneruje capability tags
+5. Updatne team.json (s backup)
+```
+
+**Quick Start:**
+```bash
+# Objavenie capabilities pre jedného workera
+python discover_worker.py --worker-id claude-main
+
+# Auto-approve (bez potvrdenia)
+python discover_worker.py --worker-id gpt4-main --auto-approve
+
+# Re-discover pre všetkých workerov
+python discover_worker.py --rediscover-all
+
+# Zoznam workerov
+python discover_worker.py --list-workers
+```
+
+**Key Features:**
+- ✅ **LLM-powered analysis** - OpenAI/Claude analyzuje dostupné tools
+- ✅ **Automatic tagging** - Generuje 3-7 capability tags (refactoring, python, debugging, etc.)
+- ✅ **Interactive UI** - Potvrdenie pred zmenou team.json
+- ✅ **Backup system** - Automatický backup pred každou zmenou
+- ✅ **Confidence scoring** - LLM poskytuje confidence score (0.0-1.0)
+- ✅ **Orchestrator integration** - Seamless integration s orchestrator_enhanced.py
+
+**Dokumentácia:** Pozri `MCP_CAPABILITY_DISCOVERY.md` pre kompletný guide s príkladmi.
 
 ## Required Artifacts
 When working with the Orchestrator, **always attach**:

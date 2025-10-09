@@ -150,6 +150,117 @@ class OrchestratorTools:
             for w in team_config.get('workers', [])
             if w.get('enabled', False)
         ]
+    
+    async def discover_worker_capabilities(
+        self,
+        worker_id: str,
+        auto_approve: bool = False
+    ) -> Dict[str, any]:
+        """
+        Discover capabilities for a worker using MCP Tool Discovery
+        
+        Args:
+            worker_id: ID of worker from team.json
+            auto_approve: Auto-approve changes without confirmation
+        
+        Returns:
+            Dict with discovery results and success status
+        """
+        try:
+            from mcp_capability_discovery import MCPCapabilityDiscoverer
+            from mcp_server_stdio import (
+                MCPServerStdio, MCPWorkerConfig, MCPWorkerType, WebSocketBroadcaster
+            )
+            
+            # Load team.json
+            team_config_path = self.project_root / "team.json"
+            if not team_config_path.exists():
+                return {
+                    'success': False,
+                    'error': 'team.json not found',
+                    'worker_id': worker_id
+                }
+            
+            with open(team_config_path, 'r') as f:
+                team_config = json.load(f)
+            
+            # Find worker
+            worker_cfg = None
+            for worker in team_config.get('workers', []):
+                if worker.get('id') == worker_id:
+                    worker_cfg = worker
+                    break
+            
+            if not worker_cfg:
+                return {
+                    'success': False,
+                    'error': f'Worker {worker_id} not found in team.json',
+                    'worker_id': worker_id
+                }
+            
+            # Create discoverer
+            discoverer = MCPCapabilityDiscoverer(
+                llm_provider="openai",
+                llm_model="gpt-4",
+                team_config_path=team_config_path
+            )
+            
+            # Create MCP config
+            mcp_cfg = worker_cfg.get('mcp_config', {})
+            config = MCPWorkerConfig(
+                worker_id=worker_id,
+                worker_type=MCPWorkerType(worker_cfg['agent_type']),
+                command=mcp_cfg.get('command', 'python'),
+                args=mcp_cfg.get('args', []),
+                env=mcp_cfg.get('env', {}),
+                max_concurrent_tasks=worker_cfg.get('max_concurrent_tasks', 1),
+                enabled=worker_cfg.get('enabled', True)
+            )
+            
+            # Start MCP server
+            broadcaster = WebSocketBroadcaster()
+            server = MCPServerStdio(config, broadcaster)
+            
+            await server.start()
+            await asyncio.sleep(2)  # Wait for init
+            
+            # Discover
+            result = await discoverer.discover_worker_capabilities(
+                worker_id=worker_id,
+                mcp_server=server,
+                worker_description=f"{worker_cfg.get('agent_type')} worker"
+            )
+            
+            # Update if auto-approve
+            updated = False
+            if auto_approve:
+                updated = await discoverer.update_team_config(
+                    worker_id=worker_id,
+                    capabilities=result.analysis.capabilities,
+                    backup=True
+                )
+            
+            # Stop server
+            await server.stop()
+            
+            return {
+                'success': True,
+                'worker_id': worker_id,
+                'tools_count': result.tools_count,
+                'capabilities': result.analysis.capabilities,
+                'previous_capabilities': result.previous_capabilities,
+                'changes_detected': result.changes_detected,
+                'updated': updated,
+                'confidence_score': result.analysis.confidence_score,
+                'reasoning': result.analysis.reasoning
+            }
+        
+        except Exception as e:
+            return {
+                'success': False,
+                'error': str(e),
+                'worker_id': worker_id
+            }
 
 # ============================================================================
 # SIMPLIFIED ORCHESTRATOR (without full mcp-use for now)

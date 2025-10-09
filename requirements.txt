@@ -1,5 +1,5 @@
 # Analytic Programming Orchestrator - Dependencies
-# Version: 1.2.0 (Phase 3 - MCP Integration)
+# Version: 1.3.0 (MCP Capability Discovery)
 
 # NOTE: asyncio is built into Python 3.7+ standard library
 
@@ -8,6 +8,10 @@ aiofiles>=23.2.1
 
 # WebSocket server/client (for dashboard streaming)
 websockets>=12.0
+
+# LLM API support (for capability discovery)
+openai>=1.3.0       # OpenAI API (GPT-4, GPT-3.5)
+anthropic>=0.7.0    # Claude API (optional)
 
 # Optional: File system monitoring (backup for log monitoring)
 # watchdog>=3.0.0
