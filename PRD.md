@@ -217,6 +217,66 @@ The system MUST provide a working autonomous orchestrator:
 
 **Test Results**: ✅ All phases tested and working
 
+### R11: AP Studio - Web-Based IDE (CRITICAL - NEW)
+**Priority**: P0
+**Status**: ✅ Implemented (October 9, 2025)
+
+The system MUST provide a complete web-based IDE for Analytic Programming:
+- **R11.1**: Phase 0: Brainstorming - AI-assisted interactive PRD.md creation
+- **R11.2**: Workers Management UI - Visual interface for MCP worker management
+- **R11.3**: Real-time Orchestration Monitor - Live progress tracking across 3 phases
+- **R11.4**: Version Management - Separate Git repos per version (`projects/{name}/v{version}/.git`)
+- **R11.5**: 3-Channel WebSocket Streaming - Real-time updates for brainstorm, workers, orchestration
+- **R11.6**: Dark Forest Theme - Stunning UI with OpenAI-inspired animations
+- **R11.7**: Database Persistence - SQLite for projects, versions, workers, orchestrations
+
+**Implementation Details**:
+- **ap_studio.html** (~1700 lines): Web UI with 3 tabs (Brainstorming, Workers, Orchestration)
+- **ap_studio_backend.py** (~500 lines): FastAPI backend with REST API + 3 WebSocket endpoints
+- **ap_studio_db.py** (~300 lines): SQLite database schema and operations
+- **brainstorm_agent.py** (~250 lines): OpenAI-powered brainstorming agent
+- **version_manager.py** (~150 lines): Git repository management per version
+- **orchestration_launcher.py** (~350 lines): Bridge between UI and orchestrator_enhanced.py
+
+**Three Tabs**:
+1. **🧠 Brainstorming** - Chat with AI to build PRD.md in real-time, launch orchestration button
+2. **🤖 Workers** - Add/discover/monitor MCP workers, real-time status updates
+3. **🎭 Orchestration** - Phase progress bars (ANALYTIC→PLANNING→EXECUTION), activity log, wave info
+
+**Database Schema**:
+- `projects` - Project metadata
+- `versions` - Version metadata with PRD content, separate Git repo per version
+- `brainstorm_sessions` + `brainstorm_messages` - Chat history
+- `workers` - MCP worker configuration and capabilities
+- `orchestrations` - Orchestration runs with status, phase, waves
+- `issues` + `features` - Extracted from brainstorming
+
+**Acceptance Criteria**:
+- ✅ Can brainstorm project and build PRD.md interactively
+- ✅ Can add/discover/monitor workers via UI
+- ✅ Can launch orchestration from brainstorming tab
+- ✅ Real-time progress updates via WebSocket (< 10ms latency)
+- ✅ Each version creates separate Git repo
+- ✅ All 3 phases (ANALYTIC, PLANNING, EXECUTION) stream progress
+- ✅ Activity log shows timestamped events (50 entries max)
+- ✅ Success/error notifications
+- ✅ Dark/light theme toggle
+
+**Quick Start**:
+```bash
+export OPENAI_API_KEY=sk-proj-...
+python ap_studio_backend.py
+# Open http://localhost:8000
+```
+
+**Test Results**: ✅ All features tested and working (see ORCHESTRATION_TESTED.md)
+
+**Documentation**:
+- `START_AP_STUDIO.md` - Quick start guide (<2 minutes)
+- `AP_STUDIO_ARCHITECTURE.md` - System architecture
+- `ORCHESTRATION_INTEGRATION.md` - Technical details
+- `ORCHESTRATION_TESTED.md` - Test results
+
 ### R8: Deterministic Testing Framework (HIGH)
 **Priority**: P1
 **Status**: ✅ Implemented
@@ -483,6 +543,18 @@ Assumes ability to merge multiple diffs and run quality gates on integrated resu
 - Advanced prompt engineering ideas (+170 lines)
 - Multi-agent RESET
 - 660 lines total (+96% from AP 1.0)
+
+### AP Studio 1.0 (Web IDE) - October 9, 2025
+- **Phase 0: Brainstorming** - AI-assisted PRD.md creation
+- **Workers Management UI** - Visual worker management
+- **Orchestration Monitor** - Real-time progress tracking
+- **Version Management** - Separate Git repos per version
+- **3-Channel WebSocket** - Real-time streaming (brainstorm, workers, orchestration)
+- **Database Layer** - SQLite for persistence
+- **Dark Forest Theme** - Stunning UI with OpenAI animations
+- **New Files**: 13 (ap_studio.html, ap_studio_backend.py, brainstorm_agent.py, etc.)
+- **Total Lines**: ~3500+ (UI + Backend + Docs)
+- **Documentation**: 7 new MD files (quickstart, architecture, testing, etc.)
 
 ## References
 

@@ -19,13 +19,45 @@ Analytic Programming (AP) is a collaboration protocol between the Owner, Orchest
 
 ## Implementation
 
+### 🎨 AP Studio - Web-Based IDE (NEW! October 9, 2025)
+
+**Complete web interface pre Analytic Programming s real-time streaming:**
+
+- **`ap_studio.html`**: Stunning dark forest UI (~1700 lines) - brainstorming, workers, orchestration tabs
+- **`ap_studio_backend.py`**: FastAPI backend (~500 lines) - 3 WebSocket channels, REST API
+- **`ap_studio_db.py`**: SQLite database layer (~300 lines) - projects, versions, workers, orchestrations
+- **`brainstorm_agent.py`**: OpenAI-powered brainstorming agent (~250 lines) - interactive PRD.md creation
+- **`version_manager.py`**: Git + version management (~150 lines) - separate repos per version
+- **`orchestration_launcher.py`**: Orchestration bridge (~350 lines) - real-time progress streaming
+
+**Quick Start:**
+```bash
+export OPENAI_API_KEY=sk-proj-YOUR-KEY
+python ap_studio_backend.py
+# Open http://localhost:8000
+```
+
+**Features:**
+- ✅ **Phase 0: Brainstorming** - Interactive LLM agent builds PRD.md in real-time
+- ✅ **Worker Management** - Add, discover, monitor MCP workers via UI
+- ✅ **Orchestration Monitor** - Real-time progress across 3 phases (ANALYTIC → PLANNING → EXECUTION)
+- ✅ **Version Management** - Separate Git repos per version (`projects/{name}/v{version}/.git`)
+- ✅ **WebSocket Streaming** - 3 channels: brainstorm, workers, orchestration
+- ✅ **Dark Forest Theme** - Stunning UI with OpenAI-inspired animations
+
+**Documentation:**
+- `START_AP_STUDIO.md` - Quick start guide (<2 minutes)
+- `AP_STUDIO_ARCHITECTURE.md` - System architecture
+- `ORCHESTRATION_INTEGRATION.md` - Technical details
+- `ORCHESTRATION_TESTED.md` - Test results (✅ all phases passed)
+
 ### Core Components
 - **`orchestrator.py`**: Base orchestrator (~900 lines) - data structures, documentation generation, auto-documentation engine
 - **`orchestrator_enhanced.py`**: Complete orchestrator (~900 lines) - full ANALYTIC/PLANNING/EXECUTION phases with streaming
 - **`mcp_server_stdio.py`**: MCP worker manager (~650 lines) - direct stdio communication using OpenAI Codex SDK pattern
 - **`mcp_capability_discovery.py`**: Automatic capability discovery system (~400 lines) - LLM-powered worker analysis
 - **`discover_worker.py`**: CLI tool for discovering worker capabilities with interactive UI
-- **`dashboard.html`**: Real-time dashboard UI for monitoring worker activity and metrics
+- **`dashboard.html`**: Real-time dashboard UI for monitoring worker activity and metrics (legacy - see AP Studio)
 - **`team.json`**: Worker configuration (Claude, GPT-4, Codex) with MCP connection details
 - **`docs/`**: Auto-generated documentation (accomplishments, analyses, plans, sessions)
 

@@ -14,7 +14,7 @@ fi
 cd "${repo_root}"
 
 session_dir="${repo_root}/sessions"
-today="$(date +%Y-%m-%d)"
+today="$(date +%Y-%d-%m)"
 target_dir="${session_dir}/${today}"
 
 mkdir -p "${target_dir}"
