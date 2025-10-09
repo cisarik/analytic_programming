@@ -19,20 +19,45 @@ commit_hint="${1:-}"
 relative_dir="sessions/${today}"
 
 if [[ -n "${commit_hint}" ]]; then
+    # Extract first non-empty line (commit summary)
+    commit_hint="$(printf '%s\n' "${commit_hint}" | awk 'NF && $0 !~ /^#/ {print; exit}')"
+
     # Trim leading/trailing whitespace
     commit_hint="${commit_hint#"${commit_hint%%[![:space:]]*}"}"
     commit_hint="${commit_hint%"${commit_hint##*[![:space:]]}"}"
 
-    # Replace path separators and whitespace with underscores for a safe directory name
-    sanitized_hint="${commit_hint//\//_}"
-    sanitized_hint="${sanitized_hint//[[:space:]]/_}"
+    if [[ -n "${commit_hint}" ]]; then
+        # Replace path separators and whitespace with underscores for a safe directory name
+        sanitized_hint="${commit_hint//\//_}"
+        sanitized_hint="${sanitized_hint//[[:space:]]/_}"
 
-    # Fallback to generic name if the sanitized result is empty
-    if [[ -z "${sanitized_hint}" ]]; then
-        sanitized_hint="commit"
+        # Collapse consecutive underscores
+        sanitized_hint="$(printf '%s' "${sanitized_hint}" | tr -s '_')"
+
+        # Remove characters outside a safe set
+        sanitized_hint="$(printf '%s' "${sanitized_hint}" | sed 's/[^[:alnum:]._()%-]/_/g')"
+
+        # Collapse again after replacement
+        sanitized_hint="$(printf '%s' "${sanitized_hint}" | tr -s '_')"
+
+        # Limit length to avoid filesystem errors
+        max_len=72
+        if (( ${#sanitized_hint} > max_len )); then
+            sanitized_hint="${sanitized_hint:0:max_len}"
+        trailing_underscores="${sanitized_hint##*[!_]}"
+        sanitized_hint="${sanitized_hint%"${trailing_underscores}"}"
+
+        leading_underscores="${sanitized_hint%%[!_]*}"
+        sanitized_hint="${sanitized_hint#"${leading_underscores}"}"
+        fi
+
+        # Fallback to generic name if the sanitized result is empty
+        if [[ -z "${sanitized_hint}" ]]; then
+            sanitized_hint="commit"
+        fi
+
+        relative_dir="${relative_dir}/${sanitized_hint}"
     fi
-
-    relative_dir="${relative_dir}/${sanitized_hint}"
 fi
 
 target_dir="${repo_root}/${relative_dir}"
