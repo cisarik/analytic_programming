@@ -23,33 +23,68 @@ Analytic Programming (AP) is a collaboration protocol between the Owner, Orchest
 
 **Complete web interface pre Analytic Programming s real-time streaming:**
 
-- **`ap_studio.html`**: Stunning dark forest UI (~1700 lines) - brainstorming, workers, orchestration tabs
-- **`ap_studio_backend.py`**: FastAPI backend (~500 lines) - 3 WebSocket channels, REST API
+**Core Files:**
+- **`ap_studio.html`**: Stunning dark forest UI (~2400 lines) - brainstorming, workers, orchestration tabs with file management
+- **`ap_studio_backend.py`**: FastAPI backend (~550 lines) - 3 WebSocket channels, REST API, project workspace
 - **`ap_studio_db.py`**: SQLite database layer (~300 lines) - projects, versions, workers, orchestrations
-- **`brainstorm_agent.py`**: OpenAI-powered brainstorming agent (~250 lines) - interactive PRD.md creation
+- **`brainstorm_agent_mcp.py`**: MCP-enhanced brainstorming agent (~500 lines) - interactive PRD.md with tool calling
+- **`project_workspace.py`**: Project workspace manager (~480 lines) - `~/.ap/projects/` structure
 - **`version_manager.py`**: Git + version management (~150 lines) - separate repos per version
 - **`orchestration_launcher.py`**: Orchestration bridge (~350 lines) - real-time progress streaming
 
 **Quick Start:**
 ```bash
+# Install dependencies (including mcp-use, langchain)
+pip install -r requirements.txt
+
+# Set API key
 export OPENAI_API_KEY=sk-proj-YOUR-KEY
+
+# Start backend
 python ap_studio_backend.py
-# Open http://localhost:8000
+
+# Open UI
+open ap_studio.html  # or http://localhost:8000
 ```
 
 **Features:**
-- ✅ **Phase 0: Brainstorming** - Interactive LLM agent builds PRD.md in real-time
-- ✅ **Worker Management** - Add, discover, monitor MCP workers via UI
-- ✅ **Orchestration Monitor** - Real-time progress across 3 phases (ANALYTIC → PLANNING → EXECUTION)
-- ✅ **Version Management** - Separate Git repos per version (`projects/{name}/v{version}/.git`)
-- ✅ **WebSocket Streaming** - 3 channels: brainstorm, workers, orchestration
-- ✅ **Dark Forest Theme** - Stunning UI with OpenAI-inspired animations
+
+**Phase 0: Brainstorming** ✅
+- MCP-enhanced agent with tool calling (mcp-use library)
+- Real-time PRD.md editing with **green highlighting**
+- **Undo capability** - hover over changes → "↶ Undo" button
+- Project workspace (`~/.ap/projects/<name>/`)
+- Auto-loaded context files (AGENTS.md, README.md, PRD.md with ✅)
+
+**Interactive MD Files** ✅ NEW!
+- **Click-to-chat** - klikni na TODO/BUG/Feature → pošle sa do chatu
+- **File tabs** - multi-file view (PRD.md, TODOs.md, BUGs.md, FEATURES.md)
+- **Dropdown selector** - ✅ checkmarks pre loaded context files
+- **Zero typing** - všetko klikateľné, nič netreba vypisovať
+
+**Worker Management** ✅
+- Add, discover, monitor MCP workers via UI
+- Real-time status updates
+- Capability visualization
+
+**Orchestration Monitor** ✅
+- Real-time progress: ANALYTIC → PLANNING → EXECUTION
+- Wave-based execution tracking
+- Activity log with timestamps
+
+**UI Enhancements** ✅
+- **Compact design** - 3px padding reduction everywhere
+- **Green borders** - toolbar & PRD preview
+- **Brighter animations** - background pulse (0.08 → 0.15 opacity)
+- **Dark Forest Theme** - OpenAI-inspired design
 
 **Documentation:**
+- `MCP_BRAINSTORM_README.md` - MCP agent guide (NEW!)
+- `PROJECT_WORKSPACE_README.md` - Workspace system guide (NEW!)
+- `sessions/2025-09-10/INTERACTIVE_PRD_BRAINSTORMING.md` - Session docs (NEW!)
 - `START_AP_STUDIO.md` - Quick start guide (<2 minutes)
 - `AP_STUDIO_ARCHITECTURE.md` - System architecture
 - `ORCHESTRATION_INTEGRATION.md` - Technical details
-- `ORCHESTRATION_TESTED.md` - Test results (✅ all phases passed)
 
 ### Core Components
 - **`orchestrator.py`**: Base orchestrator (~900 lines) - data structures, documentation generation, auto-documentation engine

@@ -5,12 +5,25 @@ ap_studio_backend.py - AP Studio FastAPI Backend
 FastAPI backend with:
 - REST API for CRUD operations
 - WebSocket for real-time brainstorming & orchestration
-- Brainstorm Helper Agent integration
+- Brainstorm Helper Agent integration (MCP-enhanced)
 - Worker management
 - Version management with Git
+- Project workspace management
 
-Version: 1.0.0
+Version: 2.0.0
 Date: October 9, 2025
+
+TODO:
+- [ ] Add POST /api/projects/{name}/files/{filename} for saving files
+- [ ] Implement PATCH /api/workers/{id} for enable/disable
+- [ ] Add DELETE /api/workers/{id} with safety checks
+- [ ] Implement cancel orchestration endpoint
+- [ ] Add orchestration history with filters (status, date range)
+- [ ] Implement retry button for failed orchestrations
+- [ ] Add live file diffs during execution
+- [ ] Implement desktop notifications on completion
+- [ ] Add authentication & user sessions
+- [ ] Production security audit
 """
 
 import asyncio
@@ -29,9 +42,10 @@ from pydantic import BaseModel
 
 # Local imports
 from ap_studio_db import APStudioDB
-from brainstorm_agent import BrainstormHelperAgent
+from brainstorm_agent_mcp import MCPBrainstormAgent  # MCP-enhanced version
 from version_manager import VersionManager
 from orchestration_launcher import OrchestrationLauncher
+from project_workspace import ProjectWorkspace
 
 
 # ============================================================================
@@ -126,22 +140,33 @@ async def lifespan(app: FastAPI):
     app.state.version_manager = VersionManager()
     print("✓ Version manager initialized")
     
-    # Initialize brainstorm agent
+    # Initialize WebSocket manager (needed for brainstorm agent)
+    app.state.ws_manager = ConnectionManager()
+    print("✓ WebSocket manager initialized")
+    
+    # Initialize MCP brainstorm agent with WebSocket callback
     api_key = os.getenv("OPENAI_API_KEY")
     if api_key:
-        app.state.brainstorm_agent = BrainstormHelperAgent(api_key=api_key)
-        print("✓ Brainstorm agent initialized")
+        async def ws_callback(data):
+            """WebSocket callback for PRD changes"""
+            await app.state.ws_manager.broadcast(data, 'brainstorm')
+        
+        app.state.brainstorm_agent = MCPBrainstormAgent(
+            api_key=api_key,
+            websocket_callback=ws_callback
+        )
+        print("✓ MCP Brainstorm agent initialized")
     else:
         print("⚠️  OPENAI_API_KEY not set - brainstorming will be limited")
         app.state.brainstorm_agent = None
     
-    # Initialize WebSocket manager
-    app.state.ws_manager = ConnectionManager()
-    print("✓ WebSocket manager initialized")
-    
     # Initialize orchestration launcher
     app.state.orchestration_launcher = OrchestrationLauncher(app.state.db)
     print("✓ Orchestration launcher initialized")
+    
+    # Initialize project workspace
+    app.state.project_workspace = ProjectWorkspace()
+    print("✓ Project workspace initialized")
     
     yield
     
@@ -198,10 +223,20 @@ async def list_projects():
 async def create_project(project: ProjectCreate):
     """Create new project"""
     try:
+        # Create project in database
         project_id = app.state.db.create_project(
             name=project.name,
             description=project.description
         )
+        
+        # Create project workspace directory
+        try:
+            project_dir = app.state.project_workspace.create_project(project.name)
+            print(f"✓ Created project workspace: {project_dir}")
+        except ValueError as e:
+            # Project directory already exists - that's ok
+            print(f"⚠️  Project workspace: {e}")
+        
         return {
             "success": True,
             "project_id": project_id,
@@ -223,6 +258,39 @@ async def get_project(project_id: int):
     project['versions'] = versions
     
     return {"project": project}
+
+
+@app.get("/api/projects/{project_name}/files")
+async def get_project_files(project_name: str):
+    """
+    Get all markdown files for a project
+    
+    Returns files with loaded status (context files have ✅)
+    """
+    try:
+        # Get project files from workspace
+        files = app.state.project_workspace.get_project_files(project_name)
+        
+        # Get context files (loaded by agent)
+        context_files = app.state.project_workspace.get_context_files(project_name)
+        
+        # Mark files as loaded if in context
+        files_data = []
+        for file in files:
+            files_data.append({
+                "name": file.name,
+                "icon": file.icon,
+                "content": file.content,
+                "loaded": file.name in context_files,
+                "size": len(file.content)
+            })
+        
+        return {
+            "files": files_data,
+            "context_files": list(context_files.keys())
+        }
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 # ----------------------------------------------------------------------------
@@ -381,17 +449,27 @@ async def websocket_brainstorm(websocket: WebSocket):
                 # Get session & version
                 session = app.state.db.get_brainstorm_session(session_id)
                 version = app.state.db.get_version(session['version_id'])
-                current_prd = version['prd_content'] or ""
                 
-                # Get agent response
+                # Get agent response (MCP agent handles PRD internally)
                 if app.state.brainstorm_agent:
-                    response, updated_prd = await app.state.brainstorm_agent.process_message(
-                        user_message,
-                        current_prd
-                    )
+                    response = await app.state.brainstorm_agent.process_message(user_message)
+                    updated_prd = app.state.brainstorm_agent.get_prd_content()
+                    changes = app.state.brainstorm_agent.get_changes()
+                    
+                    # Convert changes to dict for JSON
+                    changes_dict = [
+                        {
+                            'line_number': c.line_number,
+                            'old_value': c.old_value,
+                            'new_value': c.new_value,
+                            'section': c.section
+                        }
+                        for c in changes
+                    ]
                 else:
                     response = f"Rozumiem: {user_message}. (Brainstorm agent not available)"
-                    updated_prd = current_prd + f"\n\n## User Input\n{user_message}"
+                    updated_prd = version['prd_content'] or ""
+                    changes_dict = []
                 
                 # Save assistant message
                 app.state.db.add_brainstorm_message(session_id, 'assistant', response)
@@ -399,11 +477,12 @@ async def websocket_brainstorm(websocket: WebSocket):
                 # Update PRD
                 app.state.db.update_version_prd(session['version_id'], updated_prd)
                 
-                # Send response
+                # Send response with changes for highlighting
                 await app.state.ws_manager.send_personal({
                     'type': 'response',
                     'message': response,
-                    'prd_content': updated_prd
+                    'prd_content': updated_prd,
+                    'prd_changes': changes_dict
                 }, websocket)
             
             elif msg_type == 'save_prd':

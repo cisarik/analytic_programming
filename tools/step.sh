@@ -14,8 +14,28 @@ fi
 cd "${repo_root}"
 
 session_dir="${repo_root}/sessions"
-today="$(date +%Y-%m-%d)"
-target_dir="${session_dir}/${today}"
+today="$(date +%Y-%d-%m)"
+commit_hint="${1:-}"
+relative_dir="sessions/${today}"
+
+if [[ -n "${commit_hint}" ]]; then
+    # Trim leading/trailing whitespace
+    commit_hint="${commit_hint#"${commit_hint%%[![:space:]]*}"}"
+    commit_hint="${commit_hint%"${commit_hint##*[![:space:]]}"}"
+
+    # Replace path separators and whitespace with underscores for a safe directory name
+    sanitized_hint="${commit_hint//\//_}"
+    sanitized_hint="${sanitized_hint//[[:space:]]/_}"
+
+    # Fallback to generic name if the sanitized result is empty
+    if [[ -z "${sanitized_hint}" ]]; then
+        sanitized_hint="commit"
+    fi
+
+    relative_dir="${relative_dir}/${sanitized_hint}"
+fi
+
+target_dir="${repo_root}/${relative_dir}"
 
 mkdir -p "${target_dir}"
 
@@ -58,7 +78,7 @@ for path in "${candidates[@]}"; do
     fi
 
     filename="$(basename "${path}")"
-    dest_relative="sessions/${today}/${filename}"
+    dest_relative="${relative_dir}/${filename}"
     dest_path="${repo_root}/${dest_relative}"
 
     if [[ -e "${dest_path}" ]]; then
@@ -69,7 +89,7 @@ for path in "${candidates[@]}"; do
             suffix=$((suffix + 1))
         done
         dest_path="${target_dir}/${base_name}_${suffix}.${extension}"
-        dest_relative="sessions/${today}/${base_name}_${suffix}.${extension}"
+        dest_relative="${relative_dir}/${base_name}_${suffix}.${extension}"
     fi
 
     if git ls-files --error-unmatch "${path}" >/dev/null 2>&1; then

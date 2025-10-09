@@ -219,33 +219,63 @@ The system MUST provide a working autonomous orchestrator:
 
 ### R11: AP Studio - Web-Based IDE (CRITICAL - NEW)
 **Priority**: P0
-**Status**: ✅ Implemented (October 9, 2025)
+**Status**: ✅ Implemented + Enhanced (October 9, 2025)
 
 The system MUST provide a complete web-based IDE for Analytic Programming:
-- **R11.1**: Phase 0: Brainstorming - AI-assisted interactive PRD.md creation
+- **R11.1**: Phase 0: Brainstorming - MCP-enhanced AI with tool calling for interactive PRD.md creation
 - **R11.2**: Workers Management UI - Visual interface for MCP worker management
 - **R11.3**: Real-time Orchestration Monitor - Live progress tracking across 3 phases
-- **R11.4**: Version Management - Separate Git repos per version (`projects/{name}/v{version}/.git`)
-- **R11.5**: 3-Channel WebSocket Streaming - Real-time updates for brainstorm, workers, orchestration
-- **R11.6**: Dark Forest Theme - Stunning UI with OpenAI-inspired animations
-- **R11.7**: Database Persistence - SQLite for projects, versions, workers, orchestrations
+- **R11.4**: Project Workspace - File-based structure (`~/.ap/projects/<name>/`) with AGENTS.md, README.md, PRD.md, TODOs.md, BUGs.md, FEATURES.md
+- **R11.5**: Interactive MD Files - Click-to-chat functionality for TODOs/BUGs/Features (zero typing workflow)
+- **R11.6**: 3-Channel WebSocket Streaming - Real-time updates for brainstorm, workers, orchestration
+- **R11.7**: Dark Forest Theme - Stunning UI with OpenAI-inspired animations
+- **R11.8**: Database Persistence - SQLite for projects, versions, workers, orchestrations
+- **R11.9**: Green Highlighting - Real-time PRD changes with undo capability ✨ NEW!
+- **R11.10**: File Tabs System - Multi-file view with closeable tabs ✨ NEW!
 
 **Implementation Details**:
-- **ap_studio.html** (~1700 lines): Web UI with 3 tabs (Brainstorming, Workers, Orchestration)
-- **ap_studio_backend.py** (~500 lines): FastAPI backend with REST API + 3 WebSocket endpoints
+- **ap_studio.html** (~2400 lines): Web UI with file management, tabs, clickable sections
+- **ap_studio_backend.py** (~550 lines): FastAPI backend with project workspace integration
 - **ap_studio_db.py** (~300 lines): SQLite database schema and operations
-- **brainstorm_agent.py** (~250 lines): OpenAI-powered brainstorming agent
+- **brainstorm_agent_mcp.py** (~500 lines): MCP-enhanced agent with tool calling (mcp-use library)
+- **project_workspace.py** (~480 lines): Project workspace manager (`~/.ap/projects/`)
 - **version_manager.py** (~150 lines): Git repository management per version
 - **orchestration_launcher.py** (~350 lines): Bridge between UI and orchestrator_enhanced.py
 
 **Three Tabs**:
-1. **🧠 Brainstorming** - Chat with AI to build PRD.md in real-time, launch orchestration button
+1. **🧠 Brainstorming** - MCP agent with green highlighting, undo, file tabs, click-to-chat
 2. **🤖 Workers** - Add/discover/monitor MCP workers, real-time status updates
 3. **🎭 Orchestration** - Phase progress bars (ANALYTIC→PLANNING→EXECUTION), activity log, wave info
 
+**New Features (October 9, 2025 Enhancement)**:
+
+**MCP-Enhanced Brainstorming**:
+- Tool calling via mcp-use library (100× faster than log monitoring)
+- Real-time PRD.md line manipulation with green highlighting
+- Undo button on hover (↶ Undo) - per-line granular control
+- WebSocket streaming of changes to UI
+
+**Project Workspace**:
+- File-based structure: `~/.ap/projects/<project_name>/`
+- Auto-generated templates: AGENTS.md, README.md, PRD.md, TODOs.md, BUGs.md, FEATURES.md
+- Context files marked with ✅ (auto-loaded by agent)
+- Git integration (separate repo per project)
+
+**Interactive MD Files**:
+- **Click-to-chat** - Click TODO/BUG/Feature → auto-fills chat input
+- **Zero typing** - Everything clickable, no manual typing needed
+- **File tabs** - Multi-file view with closeable tabs
+- **Smart rendering** - Clickable sections based on file type
+
+**UI Enhancements**:
+- Compact design (3px padding reduction everywhere)
+- Green borders on toolbar & PRD preview
+- Brighter background animation (0.08 → 0.15 opacity)
+- Project dropdown + "➕ New project" button in header
+
 **Database Schema**:
 - `projects` - Project metadata
-- `versions` - Version metadata with PRD content, separate Git repo per version
+- `versions` - Version metadata with PRD content
 - `brainstorm_sessions` + `brainstorm_messages` - Chat history
 - `workers` - MCP worker configuration and capabilities
 - `orchestrations` - Orchestration runs with status, phase, waves
@@ -253,10 +283,15 @@ The system MUST provide a complete web-based IDE for Analytic Programming:
 
 **Acceptance Criteria**:
 - ✅ Can brainstorm project and build PRD.md interactively
+- ✅ MCP agent uses tools to update PRD (green highlighting)
+- ✅ User can undo individual PRD changes (hover → ↶ Undo)
+- ✅ Project workspace created in ~/.ap/projects/
+- ✅ Context files auto-loaded (AGENTS.md, README.md, PRD.md with ✅)
+- ✅ Can open TODOs/BUGs/FEATURES in tabs
+- ✅ Click on TODO/BUG/Feature → sends to chat
 - ✅ Can add/discover/monitor workers via UI
 - ✅ Can launch orchestration from brainstorming tab
 - ✅ Real-time progress updates via WebSocket (< 10ms latency)
-- ✅ Each version creates separate Git repo
 - ✅ All 3 phases (ANALYTIC, PLANNING, EXECUTION) stream progress
 - ✅ Activity log shows timestamped events (50 entries max)
 - ✅ Success/error notifications

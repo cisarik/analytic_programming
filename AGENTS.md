@@ -791,14 +791,79 @@ python orchestrator_enhanced.py
 - Authentication & user sessions
 - Production security audit
 
+**Session October 9, 2025 - Interactive PRD & Project Workspace** ⭐ LATEST!
+
+**What Was Accomplished:**
+- MCP-enhanced brainstorming agent with tool calling (mcp-use library)
+- Real-time PRD editing with green highlighting and undo capability
+- Project workspace system (`~/.ap/projects/<name>/`)  
+- Interactive MD files with click-to-chat (zero typing workflow)
+- File tabs system for multi-file view
+- UI enhancements (compact design, green borders, brighter animations)
+
+**Novel Concepts:**
+1. **MCP Tool Calling** - Agent uses explicit tools to manipulate PRD.md line-by-line
+2. **Green Highlighting + Undo** - Every change highlighted green, hover → ↶ Undo button
+3. **Project Workspace** - File structure: AGENTS.md, README.md, PRD.md, TODOs.md, BUGs.md, FEATURES.md
+4. **Click-to-Chat** - Zero typing - click TODO/BUG/Feature → auto-fills chat → send
+5. **Context Indicators** - ✅ checkmarks show which files are loaded by agent
+6. **File Tabs** - Multi-file view with closeable tabs (except PRD.md)
+
+**Critical Learnings:**
+1. **OpenAI Tool Calling** - MUST include assistant message WITH tool_calls before tool responses:
+   ```python
+   # Correct:
+   1. {"role": "user", "content": "..."}
+   2. {"role": "assistant", "tool_calls": [...]}  # Required!
+   3. {"role": "tool", "tool_call_id": "...", "content": "..."}
+   4. {"role": "assistant", "content": "final response"}
+   ```
+
+2. **JSON Arguments** - Use `json.dumps()` not `str()`:
+   ```python
+   "arguments": json.dumps(tc["args"])  # Valid JSON ✅
+   # NOT: str(tc["args"])  # Python repr ✗
+   ```
+
+3. **Click-to-Chat Pattern** - Eliminates typing, speeds workflow:
+   ```javascript
+   <li class="md-clickable" onclick="sendToChat('TODO-1: ...')">
+   sendToChat(text) {
+     chatInput.value = text;  // Auto-fill
+     if (confirm("Send?")) sendMessage();
+   }
+   ```
+
+**Files Created (6):**
+- `brainstorm_agent_mcp.py` (~500 lines) - MCP agent with PRDManipulationTools
+- `project_workspace.py` (~480 lines) - Workspace manager
+- `MCP_BRAINSTORM_README.md`, `PROJECT_WORKSPACE_README.md` - Docs
+- `sessions/2025-09-10/INTERACTIVE_PRD_BRAINSTORMING.md` - Session details
+- `test_mcp_brainstorm.sh` - Testing script
+
+**Files Modified (5):**
+- `ap_studio.html` - File tabs, clickable sections, workspace UI (+800 lines)
+- `ap_studio_backend.py` - Project workspace integration
+- `requirements.txt` - Added mcp-use, langchain
+- `tools/test_ap_studio.sh` - Updated with embedded documentation
+- `README.md`, `PRD.md` - Updated with new features
+
+**Quick Test:**
+```bash
+./test_mcp_brainstorm.sh  # Test MCP agent
+python ap_studio_backend.py  # Start UI
+# Open browser → Create project → Brainstorm → See green highlights!
+```
+
 ## Version Information
 
-- **Protocol Version**: AP 2.0 (Multi-Agent Edition) + AP Studio 1.0 (Web IDE)
-- **AGENTS.md Version**: 2.0
+- **Protocol Version**: AP 2.0 (Multi-Agent Edition)
+- **AP Studio Version**: 2.0 (Enhanced with MCP + Interactive MD)
+- **AGENTS.md Version**: 2.1
 - **Last Updated**: October 9, 2025
 - **Implementation Status**: 
   - ✅ Phases 1 & 2 complete (ANALYTIC, PLANNING)
-  - ✅ AP Studio complete (Brainstorming, Workers, Orchestration UI)
+  - ✅ AP Studio 2.0 complete (MCP agent, workspace, interactive MD)
   - ✅ Orchestration Integration complete (real-time streaming)
   - ⏸️ Phase 3 execution with real workers (pending MCP worker configuration)
 
@@ -823,12 +888,22 @@ Before starting work on AP protocol:
 - [ ] Read START_AP_STUDIO.md (10 minutes)
 - [ ] Read AP_STUDIO_ARCHITECTURE.md (15 minutes)
 - [ ] Read ORCHESTRATION_INTEGRATION.md (20 minutes)
-- [ ] Test AP Studio: `./start.sh` or `python ap_studio_backend.py` (5 minutes)
+- [ ] Test AP Studio: `python ap_studio_backend.py` (5 minutes)
 - [ ] Explore 3 tabs: Brainstorming, Workers, Orchestration (10 minutes)
 - [ ] Review WebSocket implementation (3 channels) (15 minutes)
 - [ ] Understand database schema in ap_studio_db.py (10 minutes)
 
-**Total time investment**: ~3 hours to fully understand protocol + implementation + AP Studio
+**For Interactive PRD & Workspace (NEW!):**
+- [ ] Read MCP_BRAINSTORM_README.md (15 minutes)
+- [ ] Read PROJECT_WORKSPACE_README.md (15 minutes)
+- [ ] Read sessions/2025-09-10/INTERACTIVE_PRD_BRAINSTORMING.md (20 minutes)
+- [ ] Test MCP agent: `./test_mcp_brainstorm.sh` (5 minutes)
+- [ ] Try click-to-chat: Open TODOs.md → click item → see auto-fill (5 minutes)
+- [ ] Understand green highlighting + undo (10 minutes)
+- [ ] Review PRDManipulationTools in brainstorm_agent_mcp.py (15 minutes)
+- [ ] Explore workspace structure: `ls ~/.ap/projects/` (5 minutes)
+
+**Total time investment**: ~4 hours to fully understand protocol + implementation + AP Studio + Interactive Features
 
 **Worth it?** Absolutely! You'll work confidently, understand the novel approach, avoid mistakes, and contribute effectively.
 

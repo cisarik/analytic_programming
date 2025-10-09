@@ -84,7 +84,7 @@
             right: 0;
             bottom: 0;
             z-index: 0;
-            opacity: 0.03;
+            opacity: 0.08;
             pointer-events: none;
             background-image: 
                 radial-gradient(circle at 20% 50%, var(--accent-primary) 0%, transparent 50%),
@@ -93,8 +93,8 @@
         }
 
         @keyframes bgPulse {
-            0%, 100% { opacity: 0.03; }
-            50% { opacity: 0.06; }
+            0%, 100% { opacity: 0.08; }
+            50% { opacity: 0.15; }
         }
 
         /* ============================================================
@@ -115,7 +115,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 30px;
+            padding: 17px 27px;
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             border-radius: 16px;
@@ -127,7 +127,51 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+        }
+        
+        .project-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .project-dropdown {
+            padding: 9px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-medium);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        
+        .project-dropdown:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        
+        .new-project-btn {
+            padding: 9px 14px;
+            background: var(--accent-primary);
+            border: none;
+            border-radius: 10px;
+            color: var(--bg-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .new-project-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
         }
 
         .logo h1 {
@@ -199,18 +243,18 @@
            ============================================================ */
         .tabs {
             display: flex;
-            gap: 10px;
+            gap: 7px;
             margin-bottom: 30px;
-            padding: 10px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
+            padding: 7px;
+            background: #000000;
+            border: 1px solid var(--accent-primary);
             border-radius: 16px;
             box-shadow: var(--shadow-sm);
         }
 
         .tab {
             flex: 1;
-            padding: 15px 20px;
+            padding: 12px 17px;
             background: transparent;
             border: none;
             color: var(--text-secondary);
@@ -286,7 +330,7 @@
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             border-radius: 16px;
-            padding: 20px;
+            padding: 17px;
             box-shadow: var(--shadow-md);
             display: flex;
             flex-direction: column;
@@ -295,8 +339,8 @@
         .panel-header {
             font-size: 1.2rem;
             font-weight: 600;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--border-subtle);
         }
 
@@ -308,8 +352,8 @@
         }
 
         .message {
-            margin-bottom: 20px;
-            padding: 15px;
+            margin-bottom: 17px;
+            padding: 12px;
             border-radius: 12px;
             animation: slideIn 0.3s ease;
             position: relative;
@@ -350,7 +394,7 @@
 
         .chat-input {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             background: var(--bg-tertiary);
             border: 1px solid var(--border-medium);
             border-radius: 12px;
@@ -366,7 +410,7 @@
         }
 
         .send-button {
-            padding: 15px 25px;
+            padding: 12px 22px;
             background: var(--accent-primary);
             color: var(--bg-primary);
             border: none;
@@ -392,9 +436,9 @@
         .prd-preview {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-subtle);
+            padding: 17px;
+            background: #000000;
+            border: 1px solid var(--accent-primary);
             border-radius: 12px;
             font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
             font-size: 0.95rem;
@@ -416,6 +460,174 @@
             margin-left: 25px;
             margin-bottom: 12px;
         }
+        
+        /* PRD Line Highlighting */
+        .prd-line {
+            position: relative;
+            padding: 2px 8px;
+            margin: -2px -8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .prd-line.modified {
+            background: rgba(74, 222, 128, 0.15);
+            border-left: 3px solid var(--accent-primary);
+            animation: highlightPulse 2s ease-in-out;
+        }
+        
+        .prd-line.modified:hover {
+            background: rgba(74, 222, 128, 0.25);
+        }
+        
+        .prd-line.modified .undo-btn {
+            opacity: 0;
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 2px 8px;
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .prd-line.modified:hover .undo-btn {
+            opacity: 1;
+        }
+        
+        @keyframes highlightPulse {
+            0% { background: rgba(74, 222, 128, 0.3); }
+            100% { background: rgba(74, 222, 128, 0.15); }
+        }
+        
+        /* File Selector & Tabs */
+        .file-selector-dropdown {
+            flex: 1;
+            padding: 6px 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .file-selector-dropdown:hover {
+            border-color: var(--accent-primary);
+        }
+        
+        .file-open-btn {
+            padding: 6px 14px;
+            background: var(--accent-primary);
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .file-open-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+        }
+        
+        .file-tabs {
+            display: flex;
+            gap: 5px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            overflow-x: auto;
+        }
+        
+        .file-tab {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .file-tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .file-tab.active {
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+        
+        .file-tab .close-tab {
+            margin-left: 6px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .file-tab:hover .close-tab {
+            opacity: 1;
+        }
+        
+        .file-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-top: 10px;
+        }
+        
+        .file-view {
+            display: none;
+            height: 100%;
+        }
+        
+        .file-view.active {
+            display: block;
+        }
+        
+        /* Clickable MD Sections */
+        .md-clickable {
+            cursor: pointer;
+            padding: 3px 6px;
+            margin: -3px -6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .md-clickable:hover {
+            background: rgba(74, 222, 128, 0.1);
+            transform: translateX(3px);
+        }
+        
+        .md-clickable::before {
+            content: "▸ ";
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .md-clickable:hover::before {
+            opacity: 0.5;
+        }
+        
+        /* Loaded file indicator */
+        .file-loaded-icon {
+            color: var(--accent-primary);
+            font-size: 0.8em;
+            margin-right: 4px;
+        }
 
         .action-bar {
             display: flex;
@@ -425,7 +637,7 @@
 
         .action-button {
             flex: 1;
-            padding: 12px 20px;
+            padding: 9px 17px;
             background: var(--bg-tertiary);
             color: var(--text-primary);
             border: 1px solid var(--border-medium);
@@ -549,7 +761,7 @@
         .orch-header-info {
             text-align: center;
             margin-bottom: 30px;
-            padding: 20px;
+            padding: 17px;
             background: rgba(79, 222, 128, 0.05);
             border-radius: 12px;
             border: 1px solid rgba(79, 222, 128, 0.1);
@@ -570,7 +782,7 @@
 
         .phase-item {
             background: var(--card-bg);
-            padding: 20px;
+            padding: 17px;
             border-radius: 12px;
             border: 1px solid var(--border-color);
             transition: all 0.3s;
@@ -638,7 +850,7 @@
 
         .activity-log {
             background: var(--card-bg);
-            padding: 20px;
+            padding: 17px;
             border-radius: 12px;
             border: 1px solid var(--border-color);
             max-height: 400px;
@@ -718,7 +930,7 @@
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             border-radius: 16px;
-            padding: 20px;
+            padding: 17px;
             transition: all 0.3s ease;
         }
 
@@ -845,7 +1057,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            padding: 17px;
             border-bottom: 1px solid var(--border-subtle);
         }
 
@@ -876,13 +1088,13 @@
         }
 
         .modal-body {
-            padding: 20px;
+            padding: 17px;
         }
 
         .modal-footer {
             display: flex;
             gap: 10px;
-            padding: 20px;
+            padding: 17px;
             border-top: 1px solid var(--border-subtle);
         }
 
@@ -938,6 +1150,14 @@
         <header>
             <div class="logo">
                 <h1>🌲 AP Studio</h1>
+                <div class="project-selector">
+                    <select class="project-dropdown" id="projectDropdown" onchange="switchProject()">
+                        <option value="">Select project...</option>
+                    </select>
+                    <button class="new-project-btn" onclick="createNewProject()">
+                        ➕ New project
+                    </button>
+                </div>
             </div>
             <div class="header-actions">
                 <div class="status-badge">
@@ -988,17 +1208,39 @@
                     </div>
                 </div>
 
-                <!-- PRD Panel -->
+                <!-- PRD Panel (now multi-file viewer) -->
                 <div class="prd-panel">
-                    <div class="panel-header">📝 PRD.md Preview</div>
+                    <!-- File Selector Header -->
+                    <div class="panel-header" style="display: flex; align-items: center; gap: 10px; padding-bottom: 8px;">
+                        <div style="flex: 1; display: flex; align-items: center; gap: 8px;">
+                            <select class="file-selector-dropdown" id="fileSelector" onchange="handleFileSelection()">
+                                <option value="">📂 Project Context...</option>
+                            </select>
+                            <button class="file-open-btn" onclick="openSelectedFile()">
+                                Open
+                            </button>
+                        </div>
+                    </div>
                     
-                    <div class="prd-preview" id="prdPreview">
-                        <p style="opacity: 0.5;">PRD.md sa vytvorí počas brainstormingu...</p>
+                    <!-- File Tabs -->
+                    <div class="file-tabs" id="fileTabs">
+                        <button class="file-tab active" data-file="PRD.md" onclick="switchFileTab('PRD.md')">
+                            📝 PRD.md
+                        </button>
+                    </div>
+                    
+                    <!-- File Content -->
+                    <div class="file-content" id="fileContent">
+                        <div class="file-view active" id="file-PRD.md">
+                            <div class="prd-preview" id="prdPreview">
+                                <p style="opacity: 0.5;">PRD.md sa vytvorí počas brainstormingu...</p>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="action-bar">
-                        <button class="action-button" onclick="savePRD()">
-                            💾 Save PRD
+                        <button class="action-button" onclick="saveCurrentFile()">
+                            💾 Save
                         </button>
                         <button class="action-button primary" onclick="startOrchestration()">
                             🚀 Spustiť Orchestráciu
@@ -1170,7 +1412,25 @@
 
                 case 'response':
                     addMessage('assistant', data.message);
-                    updatePRD(data.prd_content);
+                    if (data.prd_content) {
+                        updatePRD(data.prd_content, data.prd_changes || []);
+                    }
+                    break;
+                
+                case 'prd_change':
+                    // Agent is modifying PRD in real-time
+                    const lines = currentPRD.split('\n');
+                    const oldValue = lines[data.line_number];
+                    lines[data.line_number] = data.new_value;
+                    currentPRD = lines.join('\n');
+                    
+                    // Add to changes and re-render with highlight
+                    const changes = [{
+                        line_number: data.line_number,
+                        old_value: oldValue,
+                        new_value: data.new_value
+                    }];
+                    updatePRD(currentPRD, changes);
                     break;
 
                 case 'prd_saved':
@@ -1180,12 +1440,20 @@
         }
 
         function startBrainstormSession() {
-            const projectName = prompt('Názov projektu:', 'my-project') || 'my-project';
-            
-            ws.send(JSON.stringify({
-                type: 'start',
-                project_name: projectName
-            }));
+            // Auto-start with current project if exists
+            if (currentProjectId && projects[currentProjectId]) {
+                ws.send(JSON.stringify({
+                    type: 'start',
+                    project_id: currentProjectId,
+                    project_name: projects[currentProjectId].name
+                }));
+            } else {
+                // First project - start brainstorming to define project
+                ws.send(JSON.stringify({
+                    type: 'start',
+                    project_name: 'Nový projekt (brainstorming...)'
+                }));
+            }
         }
 
         // ============================================================
@@ -1234,12 +1502,80 @@
         // ============================================================
         // PRD
         // ============================================================
-        function updatePRD(content) {
+        let prdHistory = {}; // Track original values for undo
+        let prdLineMap = {}; // Map line numbers to content
+        
+        function updatePRD(content, changes = []) {
             currentPRD = content;
             
-            // Render markdown (simple version)
+            // Parse content into lines
+            const lines = content.split('\n');
+            prdLineMap = {};
+            lines.forEach((line, idx) => {
+                prdLineMap[idx] = line;
+            });
+            
+            // Render markdown with highlighting
             const preview = document.getElementById('prdPreview');
-            preview.innerHTML = marked(content);
+            preview.innerHTML = renderPRDWithHighlights(content, changes);
+        }
+        
+        function renderPRDWithHighlights(text, changes = []) {
+            const lines = text.split('\n');
+            const modifiedLines = new Set(changes.map(c => c.line_number));
+            
+            let html = '';
+            lines.forEach((line, idx) => {
+                const isModified = modifiedLines.has(idx);
+                const change = changes.find(c => c.line_number === idx);
+                
+                if (isModified && change) {
+                    // Store original value for undo
+                    if (!prdHistory[idx]) {
+                        prdHistory[idx] = change.old_value;
+                    }
+                    
+                    html += `<div class="prd-line modified" data-line="${idx}">`;
+                    html += marked(line);
+                    html += `<button class="undo-btn" onclick="undoPRDChange(${idx})">↶ Undo</button>`;
+                    html += '</div>';
+                } else {
+                    html += `<div class="prd-line" data-line="${idx}">`;
+                    html += marked(line);
+                    html += '</div>';
+                }
+            });
+            
+            return html;
+        }
+        
+        function undoPRDChange(lineNumber) {
+            if (prdHistory[lineNumber]) {
+                // Restore original value
+                const lines = currentPRD.split('\n');
+                lines[lineNumber] = prdHistory[lineNumber];
+                currentPRD = lines.join('\n');
+                
+                // Remove from history
+                delete prdHistory[lineNumber];
+                
+                // Re-render without this change
+                const remainingChanges = Object.keys(prdHistory).map(ln => ({
+                    line_number: parseInt(ln),
+                    old_value: prdHistory[ln]
+                }));
+                
+                updatePRD(currentPRD, remainingChanges);
+                
+                // Notify agent of undo
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({
+                        type: 'undo_change',
+                        session_id: currentSessionId,
+                        line_number: lineNumber
+                    }));
+                }
+            }
         }
 
         // Simple markdown renderer
@@ -1731,10 +2067,303 @@
         }
 
         // ============================================================
+        // PROJECT MANAGEMENT
+        // ============================================================
+        let currentProjectId = null;
+        let projects = {};
+        let projectFiles = {};  // Loaded project files
+        let loadedFiles = new Set();  // Files loaded as context
+        let openTabs = new Set(['PRD.md']);  // Open file tabs
+        let currentFile = 'PRD.md';  // Currently active file
+
+        async function loadProjects() {
+            try {
+                const response = await fetch('http://localhost:8000/api/projects');
+                const data = await response.json();
+                
+                const dropdown = document.getElementById('projectDropdown');
+                dropdown.innerHTML = '<option value="">Select project...</option>';
+                
+                if (data.projects && data.projects.length > 0) {
+                    data.projects.forEach(project => {
+                        projects[project.id] = project;
+                        const option = document.createElement('option');
+                        option.value = project.id;
+                        option.textContent = project.name;
+                        dropdown.appendChild(option);
+                    });
+                    
+                    // Auto-select first project if none selected
+                    if (!currentProjectId && data.projects.length > 0) {
+                        dropdown.value = data.projects[0].id;
+                        currentProjectId = data.projects[0].id;
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load projects:', error);
+            }
+        }
+
+        async function switchProject() {
+            const dropdown = document.getElementById('projectDropdown');
+            const projectId = dropdown.value;
+            
+            if (!projectId) return;
+            
+            currentProjectId = projectId;
+            const project = projects[projectId];
+            
+            console.log(`Switched to project: ${project.name}`);
+            
+            // Load project files
+            await loadProjectFiles(project.name);
+        }
+        
+        async function loadProjectFiles(projectName) {
+            try {
+                const response = await fetch(`http://localhost:8000/api/projects/${projectName}/files`);
+                const data = await response.json();
+                
+                if (data.files) {
+                    projectFiles = {};
+                    loadedFiles.clear();
+                    
+                    // Populate file selector dropdown
+                    const fileSelector = document.getElementById('fileSelector');
+                    fileSelector.innerHTML = '<option value="">📂 Project Context...</option>';
+                    
+                    data.files.forEach(file => {
+                        projectFiles[file.name] = file;
+                        
+                        // Check if loaded as context
+                        const isLoaded = file.loaded || false;
+                        if (isLoaded) {
+                            loadedFiles.add(file.name);
+                        }
+                        
+                        const checkmark = isLoaded ? '✅ ' : '';
+                        const option = document.createElement('option');
+                        option.value = file.name;
+                        option.textContent = `${checkmark}${file.icon} ${file.name}`;
+                        fileSelector.appendChild(option);
+                    });
+                    
+                    console.log(`✓ Loaded ${data.files.length} files for ${projectName}`);
+                    console.log(`✓ Context files: ${Array.from(loadedFiles).join(', ')}`);
+                }
+            } catch (error) {
+                console.error('Failed to load project files:', error);
+            }
+        }
+        
+        function handleFileSelection() {
+            // Just update dropdown, file opens on "Open" button click
+            const fileSelector = document.getElementById('fileSelector');
+            const filename = fileSelector.value;
+            
+            if (filename) {
+                fileSelector.style.borderColor = 'var(--accent-primary)';
+            } else {
+                fileSelector.style.borderColor = '';
+            }
+        }
+        
+        function openSelectedFile() {
+            const fileSelector = document.getElementById('fileSelector');
+            const filename = fileSelector.value;
+            
+            if (!filename) {
+                alert('⚠️ Vyber súbor zo zoznamu');
+                return;
+            }
+            
+            // Add to open tabs
+            if (!openTabs.has(filename)) {
+                openTabs.add(filename);
+                addFileTab(filename);
+            }
+            
+            // Switch to this file
+            switchFileTab(filename);
+            
+            // Load content if not already loaded
+            if (!document.getElementById(`file-${filename}`)) {
+                loadFileContent(filename);
+            }
+        }
+        
+        function addFileTab(filename) {
+            const file = projectFiles[filename];
+            if (!file) return;
+            
+            const fileTabs = document.getElementById('fileTabs');
+            
+            const tab = document.createElement('button');
+            tab.className = 'file-tab';
+            tab.dataset.file = filename;
+            tab.onclick = () => switchFileTab(filename);
+            tab.innerHTML = `
+                ${file.icon} ${filename}
+                <span class="close-tab" onclick="closeFileTab(event, '${filename}')">✕</span>
+            `;
+            
+            fileTabs.appendChild(tab);
+        }
+        
+        function switchFileTab(filename) {
+            currentFile = filename;
+            
+            // Update tab active state
+            document.querySelectorAll('.file-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.file === filename);
+            });
+            
+            // Update file view active state
+            document.querySelectorAll('.file-view').forEach(view => {
+                view.classList.toggle('active', view.id === `file-${filename}`);
+            });
+        }
+        
+        function closeFileTab(event, filename) {
+            event.stopPropagation();
+            
+            if (filename === 'PRD.md') {
+                alert('⚠️ PRD.md nemôžeš zatvoriť');
+                return;
+            }
+            
+            // Remove from open tabs
+            openTabs.delete(filename);
+            
+            // Remove tab element
+            const tab = document.querySelector(`.file-tab[data-file="${filename}"]`);
+            if (tab) {
+                tab.remove();
+            }
+            
+            // Remove file view
+            const view = document.getElementById(`file-${filename}`);
+            if (view) {
+                view.remove();
+            }
+            
+            // Switch to PRD.md if this was active
+            if (currentFile === filename) {
+                switchFileTab('PRD.md');
+            }
+        }
+        
+        function loadFileContent(filename) {
+            const file = projectFiles[filename];
+            if (!file) return;
+            
+            const fileContent = document.getElementById('fileContent');
+            
+            const fileView = document.createElement('div');
+            fileView.className = 'file-view';
+            fileView.id = `file-${filename}`;
+            
+            // Render markdown with clickable sections
+            fileView.innerHTML = renderClickableMarkdown(file.content, filename);
+            
+            fileContent.appendChild(fileView);
+            
+            // Switch to this file
+            switchFileTab(filename);
+        }
+        
+        function renderClickableMarkdown(content, filename) {
+            // Make specific sections clickable based on file type
+            let html = marked(content);
+            
+            if (filename === 'TODOs.md' || filename === 'BUGs.md') {
+                // Make TODO/BUG items clickable
+                html = html.replace(
+                    /<li>(.*?)<\/li>/g,
+                    (match, text) => {
+                        const cleanText = text.replace(/<[^>]*>/g, '').trim();
+                        return `<li class="md-clickable" onclick="sendToChat('${escapeHtml(cleanText)}')">${text}</li>`;
+                    }
+                );
+            } else if (filename === 'PRD.md' || filename === 'FEATURES.md') {
+                // Make features/requirements clickable
+                html = html.replace(
+                    /<li>(F\d+:|R\d+:.*?)<\/li>/g,
+                    (match, text) => {
+                        const cleanText = text.replace(/<[^>]*>/g, '').trim();
+                        return `<li class="md-clickable" onclick="sendToChat('${escapeHtml(cleanText)}')">${text}</li>`;
+                    }
+                );
+            }
+            
+            return html;
+        }
+        
+        function escapeHtml(text) {
+            return text
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '\\"')
+                .replace(/\n/g, ' ');
+        }
+        
+        function sendToChat(text) {
+            // Auto-fill chat input and optionally send
+            const chatInput = document.getElementById('chatInput');
+            chatInput.value = text;
+            chatInput.focus();
+            
+            // Optional: auto-send
+            if (confirm(`📤 Poslať do chatu?\n\n"${text}"`)) {
+                sendMessage();
+            }
+        }
+        
+        function saveCurrentFile() {
+            // Save current file content
+            alert(`💾 Saving ${currentFile}...`);
+            
+            // TODO: Implement save to backend
+            // - POST /api/projects/{name}/files/{filename}
+            // - Send updated content
+            // - Auto-commit to Git
+            // - Show success/error notification
+        }
+
+        function createNewProject() {
+            const projectName = prompt('Názov nového projektu:', 'my-new-project');
+            
+            if (!projectName || !projectName.trim()) return;
+            
+            fetch('http://localhost:8000/api/projects', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: projectName.trim()
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.id) {
+                    loadProjects().then(() => {
+                        document.getElementById('projectDropdown').value = data.id;
+                        currentProjectId = data.id;
+                        alert(`✓ Projekt "${projectName}" bol vytvorený!`);
+                    });
+                }
+            })
+            .catch(error => {
+                alert(`✗ Chyba pri vytváraní projektu: ${error.message}`);
+            });
+        }
+
+        // ============================================================
         // INIT
         // ============================================================
         connectWebSocket();
         connectWorkersWebSocket();
+        loadProjects();
         
         // Load workers when switching to Workers tab
         document.querySelectorAll('.tab').forEach(tab => {
